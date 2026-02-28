@@ -19,6 +19,10 @@ import PaymentCancel from "./pages/PaymentCancel";
 import Dashboard from "./pages/admin/Dashboard";
 import ManageProducts from "./pages/admin/ManageProducts";
 import AddEditProduct from "./pages/admin/AddEditProduct";
+import AdminOrders from "./pages/admin/AdminOrders";
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminInventory from "./pages/admin/AdminInventory";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 function App() {
   return (
@@ -91,6 +95,38 @@ function App() {
                 element={
                   <AdminRoute>
                     <AddEditProduct />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/orders"
+                element={
+                  <AdminRoute>
+                    <AdminOrders />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/analytics"
+                element={
+                  <AdminRoute>
+                    <AdminAnalytics />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/inventory"
+                element={
+                  <AdminRoute>
+                    <AdminInventory />
+                  </AdminRoute>
+                }
+              />
+              <Route
+                path="/admin/settings"
+                element={
+                  <AdminRoute>
+                    <AdminSettings />
                   </AdminRoute>
                 }
               />

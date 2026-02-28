@@ -12,10 +12,10 @@ import {
 const topTabs = [
   { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
   { name: "Products", href: "/admin/products", icon: Package },
-  { name: "Orders", href: "/admin/dashboard", icon: ShoppingCart },
-  { name: "Analytics", href: "/admin/dashboard", icon: BarChart3 },
-  { name: "Inventory", href: "/admin/products", icon: Warehouse },
-  { name: "Settings", href: "/admin/dashboard", icon: Settings },
+  { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
+  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+  { name: "Inventory", href: "/admin/inventory", icon: Warehouse },
+  { name: "Settings", href: "/admin/settings", icon: Settings },
 ];
 
 const AdminLayout = ({ children }) => {
@@ -29,7 +29,7 @@ const AdminLayout = ({ children }) => {
           {topTabs.map((tab) => {
             const active =
               (tab.name === "Products" && location.pathname.startsWith("/admin/products")) ||
-              (tab.name === "Dashboard" && location.pathname === "/admin/dashboard");
+              (tab.name !== "Products" && location.pathname === tab.href);
             return (
               <Link
                 key={tab.name}
