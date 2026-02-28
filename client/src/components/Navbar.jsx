@@ -98,19 +98,19 @@ const Navbar = () => {
               </DropdownMenu>
 
               <Link
-                to="/products?sort=newest"
+                to="/deals"
                 className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
               >
                 Deals
               </Link>
               <Link
-                to="/products?sort=newest"
+                to="/whats-new"
                 className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
               >
                 What's New
               </Link>
               <Link
-                to="/products"
+                to="/delivery"
                 className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
               >
                 Delivery

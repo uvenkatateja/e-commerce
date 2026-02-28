@@ -15,6 +15,9 @@ import ProductDetail from "./pages/ProductDetail";
 import OrderHistory from "./pages/OrderHistory";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import PaymentCancel from "./pages/PaymentCancel";
+import Deals from "./pages/Deals";
+import WhatsNew from "./pages/WhatsNew";
+import Delivery from "./pages/Delivery";
 
 // Admin Pages
 import Dashboard from "./pages/admin/Dashboard";
@@ -41,6 +44,9 @@ function AppContent() {
           <Route path="/register" element={<Register />} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetail />} />
+          <Route path="/deals" element={<Deals />} />
+          <Route path="/whats-new" element={<WhatsNew />} />
+          <Route path="/delivery" element={<Delivery />} />
 
           {/* Protected User Routes */}
           <Route
