@@ -1,6 +1,4 @@
 import { Link, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
-import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -9,9 +7,6 @@ import {
   BarChart3,
   Warehouse,
   Settings,
-  Search,
-  Bell,
-  Mail,
 } from "lucide-react";
 
 const topTabs = [
@@ -24,42 +19,12 @@ const topTabs = [
 ];
 
 const AdminLayout = ({ children }) => {
-  const { user } = useAuth();
   const location = useLocation();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)]  bg-[#f8fafc] dark:bg-zinc-900">
-      {/* ─── TOP BAR ────────────────────────────────── */}
+    <div className="min-h-[calc(100vh-4rem)] bg-[#f8fafc] dark:bg-zinc-900">
+      {/* Tab Navigation */}
       <div className="bg-white dark:bg-zinc-950 border-b">
-        {/* Top Row: Search + User */}
-        <div className="flex items-center justify-between px-6 py-3">
-          {/* Search */}
-          <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products, categories..."
-              className="pl-10 bg-zinc-100 dark:bg-zinc-800 border-0 h-9 text-sm"
-            />
-          </div>
-
-          {/* Right: Icons + User */}
-          <div className="flex items-center gap-4 ml-4">
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
-              <Bell className="h-4 w-4" />
-            </button>
-            <button className="text-muted-foreground hover:text-foreground transition-colors">
-              <Mail className="h-4 w-4" />
-            </button>
-            <div className="flex items-center gap-2 ml-2">
-              <span className="text-sm font-medium hidden sm:block">{user?.name || "Admin"}</span>
-              <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-                {user?.name?.charAt(0).toUpperCase() || "A"}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Tab Navigation Row */}
         <div className="flex items-center gap-1 px-6 overflow-x-auto">
           {topTabs.map((tab) => {
             const active =
@@ -84,7 +49,7 @@ const AdminLayout = ({ children }) => {
         </div>
       </div>
 
-      {/* ─── CONTENT ────────────────────────────────── */}
+      {/* Content */}
       <main className="p-6">{children}</main>
     </div>
   );
