@@ -26,7 +26,16 @@ const api = axios.create({
 api.interceptors.response.use(
     (response) => response,
     (error) => {
+        const originalRequest = error.config;
+
         if (error.response?.status === 401) {
+            // CRITICAL FIX: Do NOT redirect if the 401 came from the initial /auth/me check!
+            // Without this, logged-out users are instantly kicked off the public landing page.
+            if (originalRequest.url === "/auth/me") {
+                return Promise.reject(error);
+            }
+
+            // For all other 401s (e.g., trying to access protected route with expired token)
             // Only redirect if not already on login/register page
             const path = window.location.pathname;
             if (path !== "/login" && path !== "/register") {
