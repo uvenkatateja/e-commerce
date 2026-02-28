@@ -25,6 +25,20 @@ const Navbar = () => {
   const NavLinks = ({ mobile = false }) => {
     const closeMobile = () => mobile && setMobileOpen(false);
 
+    // Admin only sees Dashboard link (admin pages have their own tab nav)
+    if (isAdmin) {
+      return (
+        <Link
+          to="/admin/dashboard"
+          onClick={closeMobile}
+          className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+        >
+          <LayoutDashboard className="h-4 w-4" />
+          Dashboard
+        </Link>
+      );
+    }
+
     return (
       <>
         <Link
@@ -42,17 +56,6 @@ const Navbar = () => {
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
           >
             My Orders
-          </Link>
-        )}
-
-        {isAdmin && (
-          <Link
-            to="/admin/dashboard"
-            onClick={closeMobile}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            Dashboard
           </Link>
         )}
       </>
