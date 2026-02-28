@@ -1,57 +1,74 @@
-import { Link, useLocation } from "react-router-dom";
-import { cn } from "@/lib/utils";
+import { useLocation } from "react-router-dom";
+import { AppSidebar } from "./app-sidebar";
 import {
-  LayoutDashboard,
-  Package,
-  ShoppingCart,
-  BarChart3,
-  Warehouse,
-  Settings,
-} from "lucide-react";
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
-const topTabs = [
-  { name: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { name: "Products", href: "/admin/products", icon: Package },
-  { name: "Orders", href: "/admin/orders", icon: ShoppingCart },
-  { name: "Analytics", href: "/admin/analytics", icon: BarChart3 },
-  { name: "Inventory", href: "/admin/inventory", icon: Warehouse },
-  { name: "Settings", href: "/admin/settings", icon: Settings },
-];
+// Map route to breadcrumb labels
+const routeLabels = {
+  "/admin/dashboard": "Dashboard",
+  "/admin/products": "All Products",
+  "/admin/products/new": "Add Product",
+  "/admin/orders": "Orders",
+  "/admin/analytics": "Analytics",
+  "/admin/inventory": "Inventory",
+  "/admin/settings": "Settings",
+};
 
 const AdminLayout = ({ children }) => {
   const location = useLocation();
 
-  return (
-    <div className="min-h-[calc(100vh-4rem)] bg-[#f8fafc] dark:bg-zinc-900">
-      {/* Tab Navigation */}
-      <div className="bg-white dark:bg-zinc-950 border-b">
-        <div className="flex items-center gap-1 px-6 overflow-x-auto">
-          {topTabs.map((tab) => {
-            const active =
-              (tab.name === "Products" && location.pathname.startsWith("/admin/products")) ||
-              (tab.name !== "Products" && location.pathname === tab.href);
-            return (
-              <Link
-                key={tab.name}
-                to={tab.href}
-                className={cn(
-                  "flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium border-b-2 transition-colors whitespace-nowrap",
-                  active
-                    ? "border-blue-600 text-blue-600"
-                    : "border-transparent text-muted-foreground hover:text-foreground"
-                )}
-              >
-                <tab.icon className="h-3.5 w-3.5" />
-                {tab.name}
-              </Link>
-            );
-          })}
-        </div>
-      </div>
+  // Determine current page name
+  let currentPage = routeLabels[location.pathname] || "Dashboard";
+  if (location.pathname.startsWith("/admin/products/edit")) {
+    currentPage = "Edit Product";
+  }
 
-      {/* Content */}
-      <main className="p-6">{children}</main>
-    </div>
+  return (
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        {/* Header with sidebar trigger + breadcrumb */}
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              orientation="vertical"
+              className="mr-2 data-[orientation=vertical]:h-4"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="/admin/dashboard">
+                    Admin Panel
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{currentPage}</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+
+        {/* Page Content */}
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+          {children}
+        </div>
+      </SidebarInset>
+    </SidebarProvider>
   );
 };
 

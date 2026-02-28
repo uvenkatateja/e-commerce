@@ -10,8 +10,8 @@
 
 ## 🚀 Live Demo
 
-- **Frontend**: [https://e-commerce-frontend.vercel.app](https://e-commerce-frontend.vercel.app)
-- **Backend**: [https://ecommerce-api.onrender.com](https://ecommerce-api.onrender.com)
+- **Frontend**: [https://e-commerce-nine-olive-69.vercel.app](https://e-commerce-nine-olive-69.vercel.app)
+- **Backend**: [https://e-commerce-iq1f.onrender.com](https://e-commerce-iq1f.onrender.com)
 
 ### Demo Credentials
 
