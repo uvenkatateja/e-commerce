@@ -1,6 +1,6 @@
-# Technical Decisions — RudraX E-Commerce Platform
+# Technical Decisions — E-Commerce Platform
 
-This document explains the architectural choices, design decisions, and tradeoffs made during the development of RudraX.
+This document explains the architectural choices, design decisions, and tradeoffs made during the development of this E-Commerce Platform.
 
 ---
 

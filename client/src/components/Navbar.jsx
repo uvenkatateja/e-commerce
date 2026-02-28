@@ -65,7 +65,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <ShoppingBag className="h-6 w-6 text-primary" />
-          <span className="text-xl font-bold tracking-tight">RudraX</span>
+          <span className="text-xl font-bold tracking-tight">E-Commerce</span>
         </Link>
 
         {/* Desktop Nav */}
@@ -113,7 +113,7 @@ const Navbar = () => {
           <SheetContent side="right" className="w-72">
             <SheetTitle className="flex items-center gap-2 mb-6">
               <ShoppingBag className="h-5 w-5 text-primary" />
-              RudraX
+              E-Commerce
             </SheetTitle>
             <div className="flex flex-col gap-4">
               <NavLinks mobile />

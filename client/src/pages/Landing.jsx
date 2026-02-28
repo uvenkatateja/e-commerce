@@ -25,7 +25,7 @@ const Landing = () => {
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight leading-tight">
               Shop Smarter with{" "}
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                RudraX
+                E-Commerce Shop
               </span>
             </h1>
 
@@ -55,7 +55,7 @@ const Landing = () => {
       {/* Features Section */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">Why Choose RudraX?</h2>
+          <h2 className="text-3xl font-bold mb-3">Why Choose Us?</h2>
           <p className="text-muted-foreground max-w-lg mx-auto">
             Built with security, performance, and user experience at its core.
           </p>

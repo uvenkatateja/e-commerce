@@ -53,7 +53,7 @@ const Register = () => {
             <UserPlus className="h-6 w-6 text-primary" />
           </div>
           <CardTitle className="text-2xl">Create Account</CardTitle>
-          <CardDescription>Join RudraX and start shopping today</CardDescription>
+          <CardDescription>Create an account and start shopping today</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">

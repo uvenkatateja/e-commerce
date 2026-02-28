@@ -1,4 +1,4 @@
-# RudraX — E-Commerce Platform
+# E-Commerce Platform
 
 > A brand-driven, full-stack MERN e-commerce platform with real Stripe payments, role-based access, and DB-level query optimization.
 
@@ -10,14 +10,14 @@
 
 ## 🚀 Live Demo
 
-- **Frontend**: [https://rudrax.vercel.app](https://rudrax.vercel.app)
-- **Backend**: [https://rudrax-api.onrender.com](https://rudrax-api.onrender.com)
+- **Frontend**: [https://e-commerce-frontend.vercel.app](https://e-commerce-frontend.vercel.app)
+- **Backend**: [https://ecommerce-api.onrender.com](https://ecommerce-api.onrender.com)
 
 ### Demo Credentials
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | `admin@rudrax.com` | `admin123` |
+| Admin | `admin@ecommerce.com` | `admin123` |
 | User | `test@example.com` | `test123` |
 
 ### Stripe Test Card
@@ -49,7 +49,7 @@ Stats cards (revenue, orders, products, users), low stock alerts, and recent ord
 ## 🏗️ Architecture Overview
 
 ```
-rudrax/
+e-commerce/
 ├── server/                    # Express.js Backend
 │   ├── config/db.js           # MongoDB connection
 │   ├── controllers/           # Route handlers
@@ -108,8 +108,8 @@ rudrax/
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/rudrax.git
-cd rudrax
+git clone https://github.com/uvenkatateja/e-commerce.git
+cd e-commerce
 ```
 
 ### 2. Backend Setup
@@ -120,7 +120,7 @@ npm install
 
 Create a `.env` file in `/server` (see `.env.example`):
 ```env
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/rudrax
+MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/ecommerce
 JWT_SECRET=your_secret_key
 JWT_EXPIRE=7d
 STRIPE_SECRET_KEY=sk_test_xxxxx
@@ -248,4 +248,4 @@ User clicks "Buy Now"
 
 ## 📝 License
 
-MIT — Built by [Your Name] for the RudraX Techlabs MERN Assignment.
+MIT — Built for the MERN Assignment.
