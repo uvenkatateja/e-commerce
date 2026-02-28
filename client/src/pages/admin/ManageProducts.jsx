@@ -4,7 +4,7 @@ import api from "../../api/axios";
 import AdminLayout from "../../components/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
   Dialog,
@@ -30,6 +30,8 @@ import {
   Package,
   Eye,
   Search,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 
 const ManageProducts = () => {
@@ -41,6 +43,8 @@ const ManageProducts = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [categories, setCategories] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   const fetchProducts = async () => {
     try {
@@ -67,7 +71,6 @@ const ManageProducts = () => {
     fetchCategories();
   }, []);
 
-  // Filter products locally (instant feedback)
   useEffect(() => {
     let result = products;
     if (searchQuery) {
@@ -79,12 +82,12 @@ const ManageProducts = () => {
       result = result.filter((p) => p.category === categoryFilter);
     }
     setFilteredProducts(result);
+    setCurrentPage(1);
   }, [searchQuery, categoryFilter, products]);
 
   const handleDelete = async () => {
     if (!deleteDialog.product) return;
     setDeleting(true);
-
     try {
       await api.delete(`/products/${deleteDialog.product._id}`);
       toast.success("Product deleted");
@@ -99,10 +102,15 @@ const ManageProducts = () => {
     }
   };
 
-  const getStockStatus = (qty) => {
-    if (qty === 0) return { label: "Out of Stock", color: "text-red-500 bg-red-500/10 border-red-500/20" };
-    if (qty <= 10) return { label: "Low Stock", color: "text-orange-500 bg-orange-500/10 border-orange-500/20" };
-    return { label: "In Stock", color: "text-green-500 bg-green-500/10 border-green-500/20" };
+  // Pagination
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = filteredProducts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const generateSKU = (id) => {
+    return id.slice(-6).toUpperCase();
   };
 
   if (loading) {
@@ -110,9 +118,9 @@ const ManageProducts = () => {
       <AdminLayout>
         <div className="space-y-6">
           <Skeleton className="h-8 w-48" />
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {Array.from({ length: 8 }).map((_, i) => (
-              <Skeleton key={i} className="h-72 rounded-xl" />
+              <Skeleton key={i} className="h-80 rounded-xl" />
             ))}
           </div>
         </div>
@@ -122,103 +130,160 @@ const ManageProducts = () => {
 
   return (
     <AdminLayout>
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">Product Management</h1>
-          <p className="text-sm text-muted-foreground">{products.length} total products</p>
-        </div>
-        <Button asChild>
+      {/* Header Row */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
+        <h1 className="text-xl font-bold text-foreground">Product Management</h1>
+        <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
           <Link to="/admin/products/new">
-            <Plus className="h-4 w-4 mr-2" />
+            <Plus className="h-3.5 w-3.5 mr-1.5" />
             Add New Product
           </Link>
         </Button>
       </div>
 
-      {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      {/* Filters Row */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
+        {/* Search */}
+        <div className="relative flex-1 max-w-xs">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
           <Input
-            placeholder="Search products..."
+            placeholder="Search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 bg-background"
+            className="pl-9 h-9 text-sm bg-white dark:bg-zinc-800 border"
           />
         </div>
-        <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full sm:w-44 bg-background">
-            <SelectValue placeholder="Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            {categories.map((cat) => (
-              <SelectItem key={cat} value={cat} className="capitalize">
-                {cat}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+
+        {/* Filter Dropdowns */}
+        <div className="flex items-center gap-2 ml-auto flex-wrap">
+          <Select defaultValue="all">
+            <SelectTrigger className="w-28 h-9 text-xs bg-white dark:bg-zinc-800">
+              <SelectValue placeholder="Status: All" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Status: All</SelectItem>
+              <SelectItem value="active">Active</SelectItem>
+              <SelectItem value="inactive">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-32 h-9 text-xs bg-white dark:bg-zinc-800">
+              <SelectValue placeholder="Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Category</SelectItem>
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat} className="capitalize">
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+
+          <Select defaultValue="all">
+            <SelectTrigger className="w-24 h-9 text-xs bg-white dark:bg-zinc-800">
+              <SelectValue placeholder="Price" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Price</SelectItem>
+              <SelectItem value="low">Low to High</SelectItem>
+              <SelectItem value="high">High to Low</SelectItem>
+            </SelectContent>
+          </Select>
+
+          <Select defaultValue="all">
+            <SelectTrigger className="w-24 h-9 text-xs bg-white dark:bg-zinc-800">
+              <SelectValue placeholder="Stock" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Stock</SelectItem>
+              <SelectItem value="instock">In Stock</SelectItem>
+              <SelectItem value="low">Low Stock</SelectItem>
+              <SelectItem value="out">Out of Stock</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
       </div>
 
-      {/* Products Grid */}
+      {/* Product Cards Grid */}
       {filteredProducts.length === 0 ? (
-        <div className="text-center py-12">
+        <div className="text-center py-16">
           <Package className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <p className="text-muted-foreground">No products found.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-          {filteredProducts.map((product) => {
-            const status = getStockStatus(product.stockQuantity);
-            return (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {paginatedProducts.map((product) => (
               <Card
                 key={product._id}
-                className="group overflow-hidden bg-background border transition-all duration-200 hover:shadow-lg"
+                className="overflow-hidden bg-white dark:bg-zinc-950 border hover:shadow-md transition-shadow"
               >
-                {/* Product Image */}
-                <div className="aspect-square overflow-hidden bg-zinc-100 dark:bg-zinc-800 relative">
+                {/* Image */}
+                <div className="aspect-square bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center p-4 overflow-hidden">
                   {product.imageUrl ? (
                     <img
                       src={product.imageUrl}
                       alt={product.title}
-                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="h-full w-full object-contain"
                       loading="lazy"
                     />
                   ) : (
-                    <div className="h-full w-full flex items-center justify-center">
-                      <Package className="h-12 w-12 text-muted-foreground/30" />
-                    </div>
+                    <Package className="h-16 w-16 text-muted-foreground/20" />
                   )}
                 </div>
 
-                {/* Product Info */}
-                <CardContent className="p-4 space-y-3">
+                {/* Info */}
+                <div className="p-3 space-y-1.5">
+                  {/* Title + Subtitle */}
                   <div>
-                    <h3 className="font-semibold text-sm line-clamp-1">{product.title}</h3>
-                    <p className="text-xs text-muted-foreground capitalize">{product.category}</p>
+                    <h3 className="font-semibold text-sm leading-tight line-clamp-1">
+                      {product.title}
+                    </h3>
+                    <p className="text-[11px] text-muted-foreground line-clamp-1 capitalize">
+                      {product.category}
+                    </p>
                   </div>
 
-                  {/* Price & Stock Row */}
+                  {/* SKU + Price Row */}
+                  <div className="flex items-center justify-between text-[11px]">
+                    <span className="text-muted-foreground">
+                      SKU: {generateSKU(product._id)}
+                    </span>
+                    <span className="text-muted-foreground">Price:</span>
+                  </div>
+
+                  {/* Price + Stock Row */}
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold">${product.price.toFixed(2)}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className="font-bold text-base">
+                      ${product.price.toFixed(2)}
+                    </span>
+                    <span className="text-[11px] text-muted-foreground">
                       {product.stockQuantity} in stock
                     </span>
                   </div>
 
                   {/* Status Badge */}
-                  <Badge variant="outline" className={`text-xs ${status.color}`}>
-                    {status.label}
-                  </Badge>
+                  <div>
+                    <Badge
+                      variant="outline"
+                      className={
+                        product.stockQuantity > 0
+                          ? "text-[10px] px-1.5 py-0 text-green-600 bg-green-50 border-green-200"
+                          : "text-[10px] px-1.5 py-0 text-red-600 bg-red-50 border-red-200"
+                      }
+                    >
+                      Status: {product.stockQuantity > 0 ? "Active" : "Out of Stock"}
+                    </Badge>
+                  </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center gap-2 pt-1 border-t">
+                  <div className="flex items-center gap-1 pt-1.5 border-t">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="flex-1 h-8 text-xs"
+                      className="flex-1 h-7 text-[11px] px-1 text-muted-foreground hover:text-foreground"
                       asChild
                     >
                       <Link to={`/admin/products/edit/${product._id}`}>
@@ -229,7 +294,7 @@ const ManageProducts = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="flex-1 h-8 text-xs"
+                      className="flex-1 h-7 text-[11px] px-1 text-muted-foreground hover:text-foreground"
                       asChild
                     >
                       <Link to={`/products/${product._id}`}>
@@ -240,7 +305,7 @@ const ManageProducts = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-8 text-xs text-destructive hover:text-destructive"
+                      className="h-7 text-[11px] px-1 text-red-500 hover:text-red-600 hover:bg-red-50"
                       onClick={() =>
                         setDeleteDialog({ open: true, product })
                       }
@@ -249,11 +314,57 @@ const ManageProducts = () => {
                       Delete
                     </Button>
                   </div>
-                </CardContent>
+                </div>
               </Card>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-2 mt-6">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                disabled={currentPage <= 1}
+                onClick={() => setCurrentPage((p) => p - 1)}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+
+              <span className="text-sm text-muted-foreground px-3">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              {/* Page Numbers */}
+              <div className="flex items-center gap-1">
+                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => i + 1).map(
+                  (num) => (
+                    <Button
+                      key={num}
+                      variant={num === currentPage ? "default" : "outline"}
+                      size="icon"
+                      className="h-8 w-8 text-xs"
+                      onClick={() => setCurrentPage(num)}
+                    >
+                      {num}
+                    </Button>
+                  )
+                )}
+              </div>
+
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                disabled={currentPage >= totalPages}
+                onClick={() => setCurrentPage((p) => p + 1)}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          )}
+        </>
       )}
 
       {/* Delete Confirmation Dialog */}

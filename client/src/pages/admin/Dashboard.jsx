@@ -21,6 +21,7 @@ import {
   Users,
   AlertTriangle,
   TrendingUp,
+  ArrowUpRight,
 } from "lucide-react";
 
 const Dashboard = () => {
@@ -49,13 +50,21 @@ const Dashboard = () => {
   const getStatusBadge = (status) => {
     switch (status) {
       case "paid":
-        return <Badge className="bg-green-500/10 text-green-500 border-green-500/20">Paid</Badge>;
+        return (
+          <Badge className="bg-green-50 text-green-600 border-green-200 text-[11px]">
+            Paid
+          </Badge>
+        );
       case "pending":
-        return <Badge variant="outline" className="text-yellow-500 border-yellow-500/20">Pending</Badge>;
+        return (
+          <Badge variant="outline" className="text-yellow-600 border-yellow-200 bg-yellow-50 text-[11px]">
+            Pending
+          </Badge>
+        );
       case "failed":
-        return <Badge variant="destructive">Failed</Badge>;
+        return <Badge variant="destructive" className="text-[11px]">Failed</Badge>;
       default:
-        return <Badge variant="secondary">{status}</Badge>;
+        return <Badge variant="secondary" className="text-[11px]">{status}</Badge>;
     }
   };
 
@@ -65,7 +74,7 @@ const Dashboard = () => {
         <Skeleton className="h-8 w-48 mb-6" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-32 rounded-xl" />
+            <Skeleton key={i} className="h-28 rounded-xl" />
           ))}
         </div>
         <Skeleton className="h-64 rounded-xl" />
@@ -78,62 +87,73 @@ const Dashboard = () => {
       title: "Total Revenue",
       value: `$${stats?.totalRevenue?.toFixed(2) || "0.00"}`,
       icon: DollarSign,
-      color: "text-green-500",
-      bg: "bg-green-500/10",
+      color: "text-green-600",
+      bg: "bg-green-50",
+      iconBg: "bg-green-100",
     },
     {
       title: "Total Orders",
       value: stats?.totalOrders || 0,
       subtitle: `${stats?.paidOrders || 0} paid`,
       icon: ShoppingCart,
-      color: "text-blue-500",
-      bg: "bg-blue-500/10",
+      color: "text-blue-600",
+      bg: "bg-blue-50",
+      iconBg: "bg-blue-100",
     },
     {
       title: "Products",
       value: stats?.totalProducts || 0,
       icon: Package,
-      color: "text-purple-500",
-      bg: "bg-purple-500/10",
+      color: "text-purple-600",
+      bg: "bg-purple-50",
+      iconBg: "bg-purple-100",
     },
     {
       title: "Users",
       value: stats?.totalUsers || 0,
       icon: Users,
-      color: "text-orange-500",
-      bg: "bg-orange-500/10",
+      color: "text-orange-600",
+      bg: "bg-orange-50",
+      iconBg: "bg-orange-100",
     },
   ];
 
   return (
     <AdminLayout>
-      <div className="flex items-center justify-between mb-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold">Dashboard</h1>
-          <p className="text-sm text-muted-foreground">Overview of your store performance</p>
+          <h1 className="text-xl font-bold">Dashboard Overview</h1>
+          <p className="text-sm text-muted-foreground">Welcome back, here&apos;s what&apos;s happening</p>
         </div>
-        <Button asChild>
-          <Link to="/admin/products">Manage Products</Link>
+        <Button asChild size="sm" className="bg-blue-600 hover:bg-blue-700">
+          <Link to="/admin/products">
+            <Package className="h-3.5 w-3.5 mr-1.5" />
+            Manage Products
+          </Link>
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {statCards.map((stat, i) => (
-          <Card key={i} className="bg-background">
-            <CardContent className="pt-6">
+          <Card key={i} className="bg-white dark:bg-zinc-950">
+            <CardContent className="pt-5 pb-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-muted-foreground">{stat.title}</p>
+                  <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">
+                    {stat.title}
+                  </p>
                   <p className="text-2xl font-bold mt-1">{stat.value}</p>
                   {stat.subtitle && (
-                    <p className="text-xs text-muted-foreground mt-1">
+                    <p className="text-[11px] text-muted-foreground mt-0.5 flex items-center gap-1">
+                      <ArrowUpRight className="h-3 w-3 text-green-500" />
                       {stat.subtitle}
                     </p>
                   )}
                 </div>
-                <div className={`w-12 h-12 rounded-lg ${stat.bg} flex items-center justify-center`}>
-                  <stat.icon className={`h-6 w-6 ${stat.color}`} />
+                <div className={`w-10 h-10 rounded-lg ${stat.iconBg} flex items-center justify-center`}>
+                  <stat.icon className={`h-5 w-5 ${stat.color}`} />
                 </div>
               </div>
             </CardContent>
@@ -143,20 +163,20 @@ const Dashboard = () => {
 
       {/* Low Stock Alert */}
       {stats?.lowStockProducts?.length > 0 && (
-        <Card className="mb-8 border-orange-500/20 bg-background">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-orange-500">
-              <AlertTriangle className="h-5 w-5" />
+        <Card className="mb-6 border-orange-200 bg-orange-50/50 dark:bg-orange-950/20">
+          <CardHeader className="py-3">
+            <CardTitle className="flex items-center gap-2 text-orange-600 text-sm">
+              <AlertTriangle className="h-4 w-4" />
               Low Stock Alert
             </CardTitle>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-0 pb-3">
             <div className="flex flex-wrap gap-2">
               {stats.lowStockProducts.map((p) => (
                 <Badge
                   key={p._id}
                   variant="outline"
-                  className="text-orange-500 border-orange-500/30"
+                  className="text-orange-600 border-orange-300 bg-white text-[11px]"
                 >
                   {p.title} ({p.stockQuantity} left)
                 </Badge>
@@ -167,50 +187,50 @@ const Dashboard = () => {
       )}
 
       {/* Recent Orders */}
-      <Card className="bg-background">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
+      <Card className="bg-white dark:bg-zinc-950">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-sm">
+            <TrendingUp className="h-4 w-4" />
             Recent Orders
           </CardTitle>
         </CardHeader>
         <CardContent>
           {recentOrders.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">
+            <p className="text-muted-foreground text-center py-8 text-sm">
               No orders yet
             </p>
           ) : (
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Customer</TableHead>
-                  <TableHead>Items</TableHead>
-                  <TableHead>Total</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Date</TableHead>
+                  <TableHead className="text-[11px]">Order ID</TableHead>
+                  <TableHead className="text-[11px]">Customer</TableHead>
+                  <TableHead className="text-[11px]">Items</TableHead>
+                  <TableHead className="text-[11px]">Total</TableHead>
+                  <TableHead className="text-[11px]">Status</TableHead>
+                  <TableHead className="text-[11px]">Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {recentOrders.map((order) => (
                   <TableRow key={order._id}>
-                    <TableCell className="font-mono text-xs">
+                    <TableCell className="font-mono text-[11px]">
                       #{order._id.slice(-8).toUpperCase()}
                     </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{order.userId?.name || "Unknown"}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="font-medium text-xs">{order.userId?.name || "Unknown"}</p>
+                        <p className="text-[10px] text-muted-foreground">
                           {order.userId?.email || ""}
                         </p>
                       </div>
                     </TableCell>
-                    <TableCell>{order.items.length} items</TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="text-xs">{order.items.length} items</TableCell>
+                    <TableCell className="font-medium text-xs">
                       ${order.totalAmount.toFixed(2)}
                     </TableCell>
                     <TableCell>{getStatusBadge(order.paymentStatus)}</TableCell>
-                    <TableCell className="text-xs text-muted-foreground">
+                    <TableCell className="text-[11px] text-muted-foreground">
                       {new Date(order.createdAt).toLocaleDateString()}
                     </TableCell>
                   </TableRow>

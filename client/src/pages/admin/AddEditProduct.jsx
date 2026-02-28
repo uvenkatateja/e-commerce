@@ -237,7 +237,7 @@ const AddEditProduct = () => {
                 </div>
               )}
 
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={loading}>
                 <Save className="h-4 w-4 mr-2" />
                 {loading
                   ? "Saving..."
