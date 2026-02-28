@@ -14,6 +14,7 @@ import axios from "axios";
  *   component doesn't need its own auth error handling.
  */
 const api = axios.create({
+    // In production, VITE_API_URL should be set in Vercel to https://e-commerce-iq1f.onrender.com/api
     baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
     withCredentials: true,
     headers: {
