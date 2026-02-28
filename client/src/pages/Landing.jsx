@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { useAuth } from "../context/AuthContext";
-import { cn } from "@/lib/utils";
 import {
   ArrowRight,
-  ShoppingBag,
-  Shield,
-  Zap,
-  CreditCard,
+  ArrowUp,
+  Globe,
+  Plus,
   Sparkle,
+  Sparkles,
 } from "lucide-react";
 
 const Landing = () => {
@@ -19,7 +19,6 @@ const Landing = () => {
       {/* ─── HERO SECTION ──────────────────────────────────── */}
       <section className="relative overflow-hidden before:absolute before:inset-1 before:h-[calc(100%-8rem)] before:rounded-2xl before:bg-muted sm:before:inset-2 md:before:rounded-[2rem] lg:before:h-[calc(100%-14rem)]">
         <div className="py-20 md:py-36">
-          {/* Hero Text Content */}
           <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
             <div>
               {/* Badge Pill */}
@@ -87,49 +86,54 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* ─── FEATURES SECTION ──────────────────────────────── */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-3">Why Choose Us?</h2>
-          <p className="text-muted-foreground max-w-lg mx-auto">
-            Built with security, performance, and user experience at its core.
-          </p>
-        </div>
+      {/* ─── FEATURES SECTION (AI Card Style) ──────────────── */}
+      <section>
+        <div className="py-24">
+          <div className="mx-auto w-full max-w-3xl px-6">
+            <h2 className="text-foreground text-balance text-3xl font-semibold md:text-4xl">
+              <span className="text-muted-foreground">Empowering your shopping with</span>{" "}
+              seamless e-commerce solutions
+            </h2>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            {
-              icon: CreditCard,
-              title: "Secure Payments",
-              desc: "Powered by Stripe with real payment processing and webhook verification.",
-            },
-            {
-              icon: Shield,
-              title: "Enterprise Security",
-              desc: "JWT authentication, bcrypt hashing, rate limiting, and helmet protection.",
-            },
-            {
-              icon: Zap,
-              title: "Blazing Fast",
-              desc: "MongoDB indexes, lean queries, debounced search, and optimized React rendering.",
-            },
-            {
-              icon: ShoppingBag,
-              title: "Great UX",
-              desc: "Responsive design, real-time stock updates, and intuitive navigation.",
-            },
-          ].map((feature, i) => (
-            <div
-              key={i}
-              className="group p-6 rounded-xl border bg-card hover:bg-accent/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
-            >
-              <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
-                <feature.icon className="h-6 w-6 text-primary" />
+            <div className="mt-12 space-y-12">
+              {/* Feature Card with Background Image */}
+              <Card className="relative overflow-hidden p-0">
+                <img
+                  src="https://images.unsplash.com/photo-1635776062043-223faf322554?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt=""
+                  className="absolute inset-0 size-full object-cover"
+                />
+                <div className="m-auto max-w-md p-4 sm:p-12">
+                  <AIAssistantIllustration />
+                </div>
+              </Card>
+
+              {/* Feature Grid */}
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-medium">Secure Payments</h3>
+                  <p className="text-muted-foreground">
+                    Powered by Stripe with real payment processing and webhook
+                    verification for safe transactions.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-medium">Real-time Inventory</h3>
+                  <p className="text-muted-foreground">
+                    Stock deduction happens only after successful payment,
+                    preventing overselling and ensuring accuracy.
+                  </p>
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-medium">Admin Dashboard</h3>
+                  <p className="text-muted-foreground">
+                    Full product management, sales analytics, and low stock
+                    alerts — all in one professional interface.
+                  </p>
+                </div>
               </div>
-              <h3 className="font-semibold mb-2">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground">{feature.desc}</p>
             </div>
-          ))}
+          </div>
         </div>
       </section>
 
@@ -149,6 +153,58 @@ const Landing = () => {
         </div>
       </section>
     </div>
+  );
+};
+
+// ─── AI ASSISTANT ILLUSTRATION COMPONENT ─────────────────
+const AIAssistantIllustration = () => {
+  return (
+    <Card aria-hidden className="relative space-y-4 p-6">
+      <div className="w-fit">
+        <Sparkles className="size-3.5 fill-purple-300 stroke-purple-300" />
+        <p className="mt-2 line-clamp-2 text-sm">
+          How can I optimize my e-commerce store for the best customer
+          experience?
+        </p>
+        <ul role="list" className="text-muted-foreground mt-3 space-y-2 text-sm">
+          {[
+            { value: "5+", emoji: "⭐️", label: "Product Categories" },
+            { value: "100%", emoji: "🔒", label: "Secure Checkout" },
+            { value: "24/7", emoji: "🛒", label: "Online Ordering" },
+          ].map((stat, index) => (
+            <li key={index} className="-ml-0.5 flex items-center gap-2">
+              <span>{stat.emoji}</span>
+              <span className="text-foreground font-medium">{stat.value}</span>{" "}
+              {stat.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div className="bg-foreground/5 -mx-3 -mb-3 space-y-3 rounded-lg p-3">
+        <div className="text-muted-foreground text-sm">Ask AI Assistant</div>
+        <div className="flex justify-between">
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              className="size-7 rounded-2xl bg-transparent shadow-none"
+            >
+              <Plus />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              className="size-7 rounded-2xl bg-transparent shadow-none"
+            >
+              <Globe />
+            </Button>
+          </div>
+          <Button size="icon" className="size-7 rounded-2xl bg-black">
+            <ArrowUp strokeWidth={3} />
+          </Button>
+        </div>
+      </div>
+    </Card>
   );
 };
 

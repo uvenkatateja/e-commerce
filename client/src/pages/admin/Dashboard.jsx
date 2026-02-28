@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../api/axios";
+import AdminLayout from "../../components/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -60,7 +61,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <AdminLayout>
         <Skeleton className="h-8 w-48 mb-6" />
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -68,7 +69,7 @@ const Dashboard = () => {
           ))}
         </div>
         <Skeleton className="h-64 rounded-xl" />
-      </div>
+      </AdminLayout>
     );
   }
 
@@ -105,11 +106,11 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <AdminLayout>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold">Admin Dashboard</h1>
-          <p className="text-muted-foreground">Overview of your store</p>
+          <h1 className="text-2xl font-bold">Dashboard</h1>
+          <p className="text-sm text-muted-foreground">Overview of your store performance</p>
         </div>
         <Button asChild>
           <Link to="/admin/products">Manage Products</Link>
@@ -119,7 +120,7 @@ const Dashboard = () => {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {statCards.map((stat, i) => (
-          <Card key={i}>
+          <Card key={i} className="bg-background">
             <CardContent className="pt-6">
               <div className="flex items-center justify-between">
                 <div>
@@ -142,7 +143,7 @@ const Dashboard = () => {
 
       {/* Low Stock Alert */}
       {stats?.lowStockProducts?.length > 0 && (
-        <Card className="mb-8 border-orange-500/20">
+        <Card className="mb-8 border-orange-500/20 bg-background">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-orange-500">
               <AlertTriangle className="h-5 w-5" />
@@ -166,7 +167,7 @@ const Dashboard = () => {
       )}
 
       {/* Recent Orders */}
-      <Card>
+      <Card className="bg-background">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
@@ -219,7 +220,7 @@ const Dashboard = () => {
           )}
         </CardContent>
       </Card>
-    </div>
+    </AdminLayout>
   );
 };
 
