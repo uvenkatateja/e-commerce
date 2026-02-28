@@ -83,9 +83,9 @@ const Products = () => {
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Products</h1>
+        <h1 className="text-3xl font-bold mb-1">Products</h1>
         <p className="text-muted-foreground">
-          Browse our collection of {pagination.totalProducts || 0} products
+          Discover our curated collection of {pagination.totalProducts || 0} premium products
         </p>
       </div>
 
