@@ -118,21 +118,21 @@ const Landing = () => {
             {heroSlides.map((slide, index) => (
               <div
                 key={index}
-                className={`w-full flex-shrink-0 ${slide.bg} rounded-2xl flex items-center justify-between p-8 md:p-12 min-h-[200px] md:min-h-[280px]`}
+                className={`w-full flex-shrink-0 ${slide.bg} rounded-2xl flex items-center justify-between px-6 md:px-10 h-[180px] md:h-[220px]`}
               >
                 <div className="max-w-sm z-10">
-                  <h2 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-6">
+                  <h2 className="text-xl md:text-3xl font-bold text-gray-900 leading-tight mb-4">
                     {slide.title}
                   </h2>
-                  <Button asChild className="bg-[#1b4332] hover:bg-[#2d6a4f] text-white rounded-full px-8">
+                  <Button asChild className="bg-[#1b4332] hover:bg-[#2d6a4f] text-white rounded-full px-6 h-9 text-sm">
                     <Link to="/products">{slide.cta}</Link>
                   </Button>
                 </div>
-                <div className="hidden sm:block w-48 md:w-64 lg:w-80 flex-shrink-0">
+                <div className="hidden sm:flex items-center justify-center w-40 md:w-52 lg:w-60 flex-shrink-0 h-full py-3">
                   <img
                     src={slide.image}
                     alt={slide.title}
-                    className="w-full h-auto object-contain drop-shadow-xl"
+                    className="max-h-full w-auto object-contain drop-shadow-xl"
                     loading="lazy"
                   />
                 </div>
@@ -195,6 +195,45 @@ const Landing = () => {
               <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
+        </div>
+      </section>
+
+      {/* ─── SERVICES TO HELP YOU SHOP ────────────────────────── */}
+      <section className="container mx-auto px-4 py-10">
+        <div className="border-t pt-10">
+          <h2 className="text-xl font-bold mb-6">Services To Help You Shop</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {/* FAQ Card */}
+            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
+              <div className="p-5">
+                <h3 className="font-bold text-lg mb-1">Frequently Asked Questions</h3>
+                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
+              </div>
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src="/service-faq.png" alt="FAQ" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+            {/* Payment Card */}
+            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
+              <div className="p-5">
+                <h3 className="font-bold text-lg mb-1">Online Payment Process</h3>
+                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
+              </div>
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src="/service-payment.png" alt="Online Payment" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+            {/* Delivery Card */}
+            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
+              <div className="p-5">
+                <h3 className="font-bold text-lg mb-1">Home Delivery Options</h3>
+                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
+              </div>
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src="/service-delivery.png" alt="Home Delivery" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
