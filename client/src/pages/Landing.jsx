@@ -1,208 +1,350 @@
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
+import api from "../api/axios";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useAuth } from "../context/AuthContext";
+import { Badge } from "@/components/ui/badge";
 import {
-  ArrowRight,
-  ArrowUp,
-  Globe,
-  Plus,
-  Sparkle,
-  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+  Heart,
+  Star,
+  ShoppingCart,
+  ShoppingBag,
+  Phone,
+  Mail,
+  MapPin,
 } from "lucide-react";
 
+// ─── HERO CAROUSEL DATA (5 ADS) ────────────────────────────────
+const heroSlides = [
+  {
+    title: "Grab Upto 50% Off On Selected Headphones",
+    cta: "Buy Now",
+    bg: "bg-[#f0f0f0]",
+    image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop",
+  },
+  {
+    title: "New Arrivals — Premium Sneakers Collection",
+    cta: "Shop Now",
+    bg: "bg-[#e8f5e9]",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&auto=format&fit=crop",
+  },
+  {
+    title: "Smart Watch Sale — Up To 40% Off",
+    cta: "Explore",
+    bg: "bg-[#e3f2fd]",
+    image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop",
+  },
+  {
+    title: "Best Deals On Fitness Equipment",
+    cta: "Shop Deals",
+    bg: "bg-[#fff3e0]",
+    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=500&auto=format&fit=crop",
+  },
+  {
+    title: "Summer Collection — Accessories & More",
+    cta: "Discover",
+    bg: "bg-[#fce4ec]",
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&auto=format&fit=crop",
+  },
+];
+
 const Landing = () => {
-  const { isAuthenticated } = useAuth();
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Fetch products
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const { data } = await api.get("/products?limit=8");
+        setProducts(data.data.products);
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  // Auto-rotate carousel
+  const nextSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  }, []);
+
+  const prevSlide = useCallback(() => {
+    setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length);
+  }, []);
+
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 4000);
+    return () => clearInterval(timer);
+  }, [nextSlide]);
 
   return (
-    <div className="relative">
-      {/* ─── HERO SECTION ──────────────────────────────────── */}
-      <section className="relative overflow-hidden before:absolute before:inset-1 before:h-[calc(100%-8rem)] before:rounded-2xl before:bg-muted sm:before:inset-2 md:before:rounded-[2rem] lg:before:h-[calc(100%-14rem)]">
-        <div className="py-20 md:py-36">
-          <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
-            <div>
-              {/* Badge Pill */}
-              <Link
-                to="/products"
-                className="hover:bg-foreground/5 mx-auto flex w-fit items-center justify-center gap-2 rounded-md py-0.5 pl-1 pr-3 transition-colors duration-150"
-              >
-                <div
-                  aria-hidden
-                  className="border-background bg-gradient-to-b from-primary to-foreground relative flex size-5 items-center justify-center rounded border shadow-md shadow-black/20 ring-1 ring-black/10"
-                >
-                  <div className="absolute inset-x-0 inset-y-1.5 border-y border-dotted border-white/25"></div>
-                  <div className="absolute inset-x-1.5 inset-y-0 border-x border-dotted border-white/25"></div>
-                  <Sparkle className="size-3 fill-white stroke-white drop-shadow" />
-                </div>
-                <span className="font-medium">Built with MERN Stack</span>
-              </Link>
-
-              <h1 className="mx-auto mt-8 max-w-3xl text-balance text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                Shop Smarter with{" "}
-                <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                  E-Commerce
-                </span>
-              </h1>
-
-              <p className="text-muted-foreground mx-auto my-6 max-w-xl text-balance text-lg md:text-xl">
-                A modern e-commerce experience powered by secure payments,
-                real-time inventory, and a sleek interface designed for
-                effortless shopping.
-              </p>
-
-              <div className="flex items-center justify-center gap-3">
-                <Button asChild size="lg">
-                  <Link to="/products">
-                    <span className="text-nowrap">Browse Products</span>
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-                {!isAuthenticated && (
-                  <Button asChild size="lg" variant="outline">
-                    <Link to="/register">
-                      <span className="text-nowrap">Create Account</span>
-                    </Link>
-                  </Button>
-                )}
-              </div>
-            </div>
+    <div className="min-h-screen">
+      {/* ─── TOP ANNOUNCEMENT BAR ─────────────────────────────── */}
+      <div className="bg-[#1b4332] text-white text-xs py-2 px-4">
+        <div className="container mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Phone className="h-3 w-3" />
+            <span>+001234567890</span>
           </div>
+          <div className="hidden sm:flex items-center gap-4">
+            <span>Get 50% Off on Selected Items</span>
+            <span className="font-semibold">|</span>
+            <Link to="/products" className="font-semibold hover:underline">
+              Shop Now
+            </Link>
+          </div>
+          <div className="flex items-center gap-3 text-[11px]">
+            <span>Eng ▾</span>
+            <span>Location ▾</span>
+          </div>
+        </div>
+      </div>
 
-          {/* Hero Image Preview */}
-          <div className="relative">
-            <div className="relative z-10 mx-auto max-w-5xl px-6">
-              <div className="mt-12 md:mt-16">
-                <div className="bg-background relative mx-auto overflow-hidden rounded-xl border border-transparent shadow-lg shadow-black/10 ring-1 ring-black/10">
+      {/* ─── HERO CAROUSEL ────────────────────────────────────── */}
+      <section className="container mx-auto px-4 py-6">
+        <div className="relative overflow-hidden rounded-2xl">
+          {/* Slides */}
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+          >
+            {heroSlides.map((slide, index) => (
+              <div
+                key={index}
+                className={`w-full flex-shrink-0 ${slide.bg} rounded-2xl flex items-center justify-between p-8 md:p-12 min-h-[200px] md:min-h-[280px]`}
+              >
+                <div className="max-w-sm z-10">
+                  <h2 className="text-2xl md:text-4xl font-bold text-gray-900 leading-tight mb-6">
+                    {slide.title}
+                  </h2>
+                  <Button asChild className="bg-[#1b4332] hover:bg-[#2d6a4f] text-white rounded-full px-8">
+                    <Link to="/products">{slide.cta}</Link>
+                  </Button>
+                </div>
+                <div className="hidden sm:block w-48 md:w-64 lg:w-80 flex-shrink-0">
                   <img
-                    src="/hero-preview.png"
-                    alt="E-Commerce Platform Preview"
-                    className="w-full h-auto"
+                    src={slide.image}
+                    alt={slide.title}
+                    className="w-full h-auto object-contain drop-shadow-xl"
                     loading="lazy"
                   />
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
+
+          {/* Navigation Arrows */}
+          <button
+            onClick={prevSlide}
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow transition-colors"
+          >
+            <ChevronLeft className="h-4 w-4" />
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white rounded-full flex items-center justify-center shadow transition-colors"
+          >
+            <ChevronRight className="h-4 w-4" />
+          </button>
+
+          {/* Dots */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentSlide(i)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  i === currentSlide ? "bg-[#1b4332] w-5" : "bg-gray-400/50"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ─── FEATURES SECTION (AI Card Style) ──────────────── */}
-      <section>
-        <div className="py-24">
-          <div className="mx-auto w-full max-w-3xl px-6">
-            <h2 className="text-foreground text-balance text-3xl font-semibold md:text-4xl">
-              <span className="text-muted-foreground">Empowering your shopping with</span>{" "}
-              seamless e-commerce solutions
-            </h2>
+      {/* ─── PRODUCTS SECTION ─────────────────────────────────── */}
+      <section className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold mb-6">Products For You!</h2>
 
-            <div className="mt-12 space-y-12">
-              {/* Feature Card with Background Image */}
-              <Card className="relative overflow-hidden p-0">
-                <img
-                  src="https://images.unsplash.com/photo-1635776062043-223faf322554?q=80&w=3132&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                  alt=""
-                  className="absolute inset-0 size-full object-cover"
-                />
-                <div className="m-auto max-w-md p-4 sm:p-12">
-                  <AIAssistantIllustration />
-                </div>
-              </Card>
-
-              {/* Feature Grid */}
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <h3 className="text-xl font-medium">Secure Payments</h3>
-                  <p className="text-muted-foreground">
-                    Powered by Stripe with real payment processing and webhook
-                    verification for safe transactions.
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-medium">Real-time Inventory</h3>
-                  <p className="text-muted-foreground">
-                    Stock deduction happens only after successful payment,
-                    preventing overselling and ensuring accuracy.
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <h3 className="text-xl font-medium">Admin Dashboard</h3>
-                  <p className="text-muted-foreground">
-                    Full product management, sales analytics, and low stock
-                    alerts — all in one professional interface.
-                  </p>
-                </div>
-              </div>
-            </div>
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="aspect-square bg-muted rounded-xl animate-pulse" />
+            ))}
           </div>
-        </div>
-      </section>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        )}
 
-      {/* ─── CTA SECTION ──────────────────────────────── */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="rounded-2xl bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border p-12 text-center">
-          <h2 className="text-3xl font-bold mb-4">Ready to Start Shopping?</h2>
-          <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-            Browse our collection of products and experience seamless checkout
-            with Stripe.
-          </p>
-          <Button size="lg" asChild>
+        {/* View All Button */}
+        <div className="text-center mt-8">
+          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
             <Link to="/products">
-              Explore Products <ArrowRight className="ml-2 h-4 w-4" />
+              View All Products
+              <ChevronRight className="ml-1 h-4 w-4" />
             </Link>
           </Button>
         </div>
       </section>
+
+      {/* ─── FOOTER ───────────────────────────────────────────── */}
+      <footer className="bg-[#1b4332] text-white mt-12">
+        <div className="container mx-auto px-4 py-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <ShoppingBag className="h-6 w-6" />
+                <span className="text-xl font-bold">E-Commerce</span>
+              </div>
+              <p className="text-white/70 text-sm leading-relaxed">
+                Your one-stop shop for premium products. Quality items at unbeatable prices with secure payments.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm text-white/70">
+                <li><Link to="/products" className="hover:text-white transition-colors">All Products</Link></li>
+                <li><Link to="/login" className="hover:text-white transition-colors">My Account</Link></li>
+                <li><Link to="/orders" className="hover:text-white transition-colors">My Orders</Link></li>
+              </ul>
+            </div>
+
+            {/* Categories */}
+            <div>
+              <h4 className="font-semibold mb-4">Categories</h4>
+              <ul className="space-y-2 text-sm text-white/70">
+                <li>Electronics</li>
+                <li>Footwear</li>
+                <li>Fitness</li>
+                <li>Accessories</li>
+                <li>Home</li>
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h4 className="font-semibold mb-4">Contact Us</h4>
+              <ul className="space-y-3 text-sm text-white/70">
+                <li className="flex items-center gap-2">
+                  <Phone className="h-4 w-4 flex-shrink-0" />
+                  +001234567890
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="h-4 w-4 flex-shrink-0" />
+                  support@ecommerce.com
+                </li>
+                <li className="flex items-start gap-2">
+                  <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                  123 Commerce St, Business City
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom */}
+          <div className="border-t border-white/20 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
+            <p>© 2026 E-Commerce. All rights reserved.</p>
+            <div className="flex gap-4">
+              <span className="hover:text-white cursor-pointer transition-colors">Privacy Policy</span>
+              <span className="hover:text-white cursor-pointer transition-colors">Terms of Service</span>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
 
-// ─── AI ASSISTANT ILLUSTRATION COMPONENT ─────────────────
-const AIAssistantIllustration = () => {
+// ─── PRODUCT CARD COMPONENT ──────────────────────────────────
+const ProductCard = ({ product }) => {
   return (
-    <Card aria-hidden className="relative space-y-4 p-6">
-      <div className="w-fit">
-        <Sparkles className="size-3.5 fill-purple-300 stroke-purple-300" />
-        <p className="mt-2 line-clamp-2 text-sm">
-          How can I optimize my e-commerce store for the best customer
-          experience?
-        </p>
-        <ul role="list" className="text-muted-foreground mt-3 space-y-2 text-sm">
-          {[
-            { value: "5+", emoji: "⭐️", label: "Product Categories" },
-            { value: "100%", emoji: "🔒", label: "Secure Checkout" },
-            { value: "24/7", emoji: "🛒", label: "Online Ordering" },
-          ].map((stat, index) => (
-            <li key={index} className="-ml-0.5 flex items-center gap-2">
-              <span>{stat.emoji}</span>
-              <span className="text-foreground font-medium">{stat.value}</span>{" "}
-              {stat.label}
-            </li>
-          ))}
-        </ul>
+    <Card className="group overflow-hidden border hover:shadow-lg transition-all duration-300 bg-white">
+      {/* Image */}
+      <div className="relative aspect-square bg-zinc-50 p-4 overflow-hidden">
+        <Link to={`/products/${product._id}`}>
+          {product.imageUrl ? (
+            <img
+              src={product.imageUrl}
+              alt={product.title}
+              className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <ShoppingBag className="h-16 w-16 text-muted-foreground/20" />
+            </div>
+          )}
+        </Link>
+
+        {/* Wishlist Heart */}
+        <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-shadow">
+          <Heart className="h-4 w-4 text-gray-400 hover:text-red-500 transition-colors" />
+        </button>
+
+        {/* Low Stock Badge */}
+        {product.stockQuantity > 0 && product.stockQuantity <= 10 && (
+          <Badge className="absolute top-3 left-3 bg-orange-500 text-white text-[10px]">
+            Only {product.stockQuantity} left
+          </Badge>
+        )}
+        {product.stockQuantity === 0 && (
+          <Badge className="absolute top-3 left-3 bg-red-500 text-white text-[10px]">
+            Sold Out
+          </Badge>
+        )}
       </div>
-      <div className="bg-foreground/5 -mx-3 -mb-3 space-y-3 rounded-lg p-3">
-        <div className="text-muted-foreground text-sm">Ask AI Assistant</div>
-        <div className="flex justify-between">
-          <div className="flex gap-2">
-            <Button
-              variant="outline"
-              size="icon"
-              className="size-7 rounded-2xl bg-transparent shadow-none"
-            >
-              <Plus />
-            </Button>
-            <Button
-              variant="outline"
-              size="icon"
-              className="size-7 rounded-2xl bg-transparent shadow-none"
-            >
-              <Globe />
-            </Button>
-          </div>
-          <Button size="icon" className="size-7 rounded-2xl bg-black">
-            <ArrowUp strokeWidth={3} />
-          </Button>
+
+      {/* Info */}
+      <div className="p-3 space-y-1.5">
+        <div className="flex items-start justify-between gap-2">
+          <Link to={`/products/${product._id}`} className="hover:underline">
+            <h3 className="font-semibold text-sm leading-tight line-clamp-1">
+              {product.title}
+            </h3>
+          </Link>
+          <span className="font-bold text-sm whitespace-nowrap">
+            ${product.price.toFixed(2)}
+          </span>
         </div>
+
+        <p className="text-[11px] text-muted-foreground line-clamp-1 capitalize">
+          {product.description || product.category}
+        </p>
+
+        {/* Stars */}
+        <div className="flex items-center gap-1">
+          {[...Array(5)].map((_, i) => (
+            <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+          ))}
+          <span className="text-[10px] text-muted-foreground ml-1">(121)</span>
+        </div>
+
+        {/* Add to Cart */}
+        <Button
+          asChild
+          variant="outline"
+          size="sm"
+          className="w-full mt-1 text-xs h-8 rounded-full"
+        >
+          <Link to={`/products/${product._id}`}>
+            <ShoppingCart className="h-3 w-3 mr-1.5" />
+            Add to Cart
+          </Link>
+        </Button>
       </div>
     </Card>
   );
