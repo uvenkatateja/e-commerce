@@ -50,10 +50,26 @@ const heroSlides = [
   },
 ];
 
+// ─── SIMPLE ACCORDION COMPONENT ──────────────────────────────
+const SimpleAccordion = ({ title, content, isOpen, onClick }) => (
+  <div className="border-b border-gray-300/60 py-4">
+    <button onClick={onClick} className="flex justify-between items-center w-full text-left font-bold text-gray-900 group">
+      {title}
+      <span className="text-2xl leading-none text-gray-600 font-normal group-hover:text-black">{isOpen ? "-" : "+"}</span>
+    </button>
+    {isOpen && (
+      <div className="mt-3 text-sm text-gray-500 leading-relaxed font-medium">
+        {content}
+      </div>
+    )}
+  </div>
+);
+
 const Landing = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [openAccordion, setOpenAccordion] = useState(2); // Unrivaled Variety open by default
 
   // Fetch products
   useEffect(() => {
@@ -165,6 +181,188 @@ const Landing = () => {
                 }`}
               />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── TOP SELLING COLLECTION ───────────────────────────── */}
+      <section className="container mx-auto px-4 py-16 md:py-24">
+        <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-6">
+          <div className="max-w-xl">
+            <Badge variant="secondary" className="bg-gray-100 text-gray-700 rounded-full px-5 py-2 font-medium text-xs mb-6 border-none hover:bg-gray-200">
+              See More product
+            </Badge>
+            <h2 className="text-4xl md:text-5xl lg:text-[56px] font-bold leading-[1.1] text-gray-900 tracking-tight">
+              Top-Selling Product<br />of the year Collection
+            </h2>
+          </div>
+          <div className="max-w-[18rem] text-left lg:text-left flex flex-col items-start lg:items-end gap-6 pb-2">
+            <p className="text-[13px] text-gray-500 leading-relaxed font-medium">
+              We do not divide our collections to seasons we create new models every week, and we in a few items
+            </p>
+            <Button variant="outline" className="rounded-full px-6 text-sm h-10 w-fit font-semibold border-gray-300">
+              Shop Now
+            </Button>
+          </div>
+        </div>
+
+        {/* Masonry-like Grid for Top Selling */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8 items-end">
+          {/* Dress */}
+          <div className="flex flex-col gap-4">
+            <div className="bg-[#fcf4ec] hover:scale-[1.02] transition-transform duration-300 rounded-[2.5rem] overflow-hidden aspect-square flex items-center justify-center relative">
+              <img src="/top-selling-dress.png" alt="Summer griles dress" className="w-full h-full object-cover p-2 rounded-[3rem]" />
+            </div>
+            <div className="flex justify-between items-start px-1">
+              <div>
+                <h3 className="font-semibold text-gray-900">Summer griles dress</h3>
+                <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1 font-medium">
+                  <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                  <span>(3.4)</span>
+                </div>
+              </div>
+              <span className="font-bold text-gray-900">$150</span>
+            </div>
+          </div>
+
+          {/* Sweater */}
+          <div className="flex flex-col gap-4 md:-translate-y-12">
+            <div className="bg-[#e2eaf4] hover:scale-[1.02] transition-transform duration-300 rounded-[2.5rem] overflow-hidden aspect-[3/4] flex items-center justify-center">
+              <img src="/top-selling-sweater.png" alt="Summer Cloth" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex justify-between items-start px-1">
+              <div>
+                <h3 className="font-semibold text-gray-900">Summer Cloth</h3>
+                <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1 font-medium">
+                  <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                  <span>(3.2)</span>
+                </div>
+              </div>
+              <span className="font-bold text-gray-900">$120</span>
+            </div>
+          </div>
+
+          {/* Water Bottle */}
+          <div className="flex flex-col gap-4">
+            <div className="bg-[#cddceb] hover:scale-[1.02] transition-transform duration-300 rounded-[2.5rem] overflow-hidden aspect-square flex items-center justify-center relative">
+              <img src="/top-selling-bottle.png" alt="Water Bottle" className="w-full h-full object-cover" />
+            </div>
+            <div className="flex justify-between items-start px-1">
+              <div>
+                <h3 className="font-semibold text-gray-900">Water Bottle</h3>
+                <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1 font-medium">
+                  <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                  <span>(4.2)</span>
+                </div>
+              </div>
+              <span className="font-bold text-gray-900">$67</span>
+            </div>
+          </div>
+
+          {/* Cap */}
+          <div className="flex flex-col gap-4 md:-translate-y-6">
+            <div className="bg-[#244b6c] hover:scale-[1.02] transition-transform duration-300 rounded-[2.5rem] overflow-hidden aspect-square flex items-center justify-center relative">
+              <img src="/top-selling-cap.png" alt="Cap" className="w-full h-full object-cover" />
+              <button className="absolute bottom-5 right-5 w-12 h-12 bg-white/20 backdrop-blur-md rounded-full border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M7 17l9.2-9.2M17 17V7H7"/></svg>
+              </button>
+            </div>
+            <div className="flex justify-between items-start px-1">
+              <div>
+                <h3 className="font-semibold text-gray-900">Cap</h3>
+                <div className="flex items-center gap-1.5 text-xs text-gray-500 mt-1 font-medium">
+                  <Star className="h-3.5 w-3.5 fill-yellow-400 text-yellow-400" />
+                  <span>(4.2)</span>
+                </div>
+              </div>
+              <span className="font-bold text-gray-900">$67</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHY CHOOSE US ─────────────────────────────────────── */}
+      <section className="container mx-auto px-4 py-12">
+        <div className="grid lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
+          <div className="bg-[#c2e4f0] rounded-[2.5rem] overflow-hidden min-h-[460px]">
+            <img src="/why-choose-us.png" alt="Why Choose Us" className="w-full h-full object-cover" />
+          </div>
+          <div className="bg-[#f8f9fa] rounded-[2.5rem] p-8 md:p-14 lg:px-20 lg:py-16 flex flex-col justify-center">
+            <h2 className="text-4xl md:text-[44px] tracking-tight font-bold text-gray-900 mb-5">Why Choose Us</h2>
+            <p className="text-gray-500 text-[13px] font-medium leading-[1.8] mb-12 max-w-[26rem]">
+              We pride ourselves on offering products that meet the highest standards of quality. Each item is carefully selected, tested, and crafted to ensure durability and customer satisfaction.
+            </p>
+            <div className="flex flex-col gap-1 w-full xl:w-[90%]">
+              <SimpleAccordion 
+                title="Unrivaled Quality" 
+                content="We offer products crafted from premium materials, ensuring they stand the test of time and provide supreme comfort." 
+                isOpen={openAccordion === 0} 
+                onClick={() => setOpenAccordion(openAccordion === 0 ? null : 0)} 
+              />
+              <SimpleAccordion 
+                title="Sustains business" 
+                content="Our practices are environmentally conscious, promoting sustainable manufacturing and fair trade." 
+                isOpen={openAccordion === 1} 
+                onClick={() => setOpenAccordion(openAccordion === 1 ? null : 1)} 
+              />
+              <SimpleAccordion 
+                title="Unrivaled Variety" 
+                content="We believe in offering great value without compromising on quality or style. Our vast collection means there's something for everyone." 
+                isOpen={openAccordion === 2} 
+                onClick={() => setOpenAccordion(openAccordion === 2 ? null : 2)} 
+              />
+              <SimpleAccordion 
+                title="Legacy Of Excellence" 
+                content="For years we've maintained a standard of excellence that keeps our customers coming back time and time again." 
+                isOpen={openAccordion === 3} 
+                onClick={() => setOpenAccordion(openAccordion === 3 ? null : 3)} 
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── HIGHLIGHT CARDS ──────────────────────────────────── */}
+      <section className="container mx-auto px-4 py-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+          <div className="bg-[#fcece3] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between items-start min-h-[260px] md:min-h-[280px]">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 max-w-[150px] leading-tight">100% Authentic Product</h3>
+              <p className="text-[13px] text-gray-600 font-medium leading-[1.6] mb-8 max-w-[160px]">
+                Prominently display a clear "100% Authentic Guarantee" on your product
+              </p>
+            </div>
+            <Button variant="outline" className="rounded-full px-6 h-9 font-semibold text-xs border-gray-400 bg-transparent text-gray-900 hover:bg-white/50">
+              See More
+            </Button>
+          </div>
+
+          <div className="bg-[#f5f6f8] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between items-start min-h-[260px] md:min-h-[280px]">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 max-w-[150px] leading-tight">Free & Easy Return</h3>
+              <p className="text-[13px] text-gray-600 font-medium leading-[1.6] mb-8 max-w-[150px]">
+                Provide customers with prepaid return labels to make the process hassle-free.
+              </p>
+            </div>
+            <Button variant="outline" className="rounded-full px-6 h-9 font-semibold text-xs border-gray-400 bg-transparent text-gray-900 hover:bg-black hover:text-white hover:border-black">
+              See More
+            </Button>
+          </div>
+
+          <div className="bg-[#f5f6f8] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between items-start min-h-[260px] md:min-h-[280px]">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-3 max-w-[150px] leading-tight">Safe Payments</h3>
+              <p className="text-[13px] text-gray-600 font-medium leading-[1.6] mb-8 max-w-[160px]">
+                Use fraud detection tools to identify suspicious activity, such as unusual purchase
+              </p>
+            </div>
+            <Button variant="outline" className="rounded-full px-6 h-9 font-semibold text-xs border-gray-400 bg-transparent text-gray-900 hover:bg-black hover:text-white hover:border-black">
+              See More
+            </Button>
+          </div>
+
+          <div className="bg-[#9db1a8] rounded-[2rem] overflow-hidden min-h-[260px] md:min-h-[280px] relative">
+            <img src="/summer-cloth-discount.png" alt="Summer Cloth 30% Off" className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500" />
           </div>
         </div>
       </section>
