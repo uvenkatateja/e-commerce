@@ -63,60 +63,48 @@ const Navbar = () => {
 
         {/* Desktop Nav Links */}
         <div className="hidden lg:flex items-center gap-6">
-          {isAdmin ? (
-            <Link
-              to="/admin/dashboard"
-              className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center gap-1"
-            >
-              <LayoutDashboard className="h-4 w-4" />
-              Dashboard
-            </Link>
-          ) : (
-            <>
-              <DropdownMenu>
-                <DropdownMenuTrigger className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center gap-1 outline-none">
-                  Categories
-                  <ChevronDown className="h-3.5 w-3.5" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-40">
-                  <DropdownMenuItem asChild>
-                    <Link to="/products?category=electronics">Electronics</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/products?category=footwear">Footwear</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/products?category=fitness">Fitness</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/products?category=accessories">Accessories</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link to="/products?category=home">Home</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+          <DropdownMenu>
+            <DropdownMenuTrigger className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors flex items-center gap-1 outline-none">
+              Categories
+              <ChevronDown className="h-3.5 w-3.5" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-40">
+              <DropdownMenuItem asChild>
+                <Link to="/products?category=electronics">Electronics</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/products?category=footwear">Footwear</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/products?category=fitness">Fitness</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/products?category=accessories">Accessories</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to="/products?category=home">Home</Link>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
 
-              <Link
-                to="/deals"
-                className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                Deals
-              </Link>
-              <Link
-                to="/whats-new"
-                className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                What's New
-              </Link>
-              <Link
-                to="/delivery"
-                className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-              >
-                Delivery
-              </Link>
-            </>
-          )}
+          <Link
+            to="/deals"
+            className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            Deals
+          </Link>
+          <Link
+            to="/whats-new"
+            className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            What's New
+          </Link>
+          <Link
+            to="/delivery"
+            className="text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
+          >
+            Delivery
+          </Link>
         </div>
 
         {/* Search Bar */}
@@ -231,24 +219,11 @@ const Navbar = () => {
             </form>
 
             <div className="flex flex-col gap-3">
-              {isAdmin ? (
-                <Link
-                  to="/admin/dashboard"
-                  onClick={() => setMobileOpen(false)}
-                  className="text-sm font-medium text-gray-700 hover:text-gray-900 flex items-center gap-2 py-1"
-                >
-                  <LayoutDashboard className="h-4 w-4" />
-                  Dashboard
-                </Link>
-              ) : (
-                <>
-                  <Link to="/products?category=electronics" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Electronics</Link>
-                  <Link to="/products?category=footwear" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Footwear</Link>
-                  <Link to="/products?category=fitness" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Fitness</Link>
-                  <Link to="/products?category=accessories" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Accessories</Link>
-                  <Link to="/products?category=home" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Home</Link>
-                </>
-              )}
+              <Link to="/products?category=electronics" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Electronics</Link>
+              <Link to="/products?category=footwear" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Footwear</Link>
+              <Link to="/products?category=fitness" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Fitness</Link>
+              <Link to="/products?category=accessories" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Accessories</Link>
+              <Link to="/products?category=home" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Home</Link>
 
               <div className="border-t my-2" />
 
