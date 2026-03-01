@@ -198,61 +198,76 @@ const Navbar = () => {
           </SheetTrigger>
           <SheetContent side="right" className="w-72">
             <SheetTitle className="flex items-center gap-2 mb-6">
-              <ShoppingBag className="h-5 w-5 text-[#1b4332]" />
-              E-Commerce
+              <div className="bg-[#1b4332] p-1.5 rounded-lg">
+                <ShoppingBag className="h-5 w-5 text-white" />
+              </div>
+              <span className="font-bold text-gray-900">E-Commerce</span>
             </SheetTitle>
 
             {/* Mobile Search */}
-            <form onSubmit={(e) => { handleSearch(e); setMobileOpen(false); }} className="mb-4">
+            <form onSubmit={(e) => { handleSearch(e); setMobileOpen(false); }} className="mb-6">
               <div className="relative">
                 <Input
                   type="text"
                   placeholder="Search Product"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pr-10 h-9 bg-zinc-50 text-sm"
+                  className="pr-10 h-11 bg-zinc-50 border-zinc-200 rounded-xl text-sm focus:ring-[#1b4332]/20"
                 />
-                <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500">
-                  <Search className="h-4 w-4" />
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <Search className="h-5 w-5" />
                 </button>
               </div>
             </form>
 
-            <div className="flex flex-col gap-3">
-              <Link to="/products?category=electronics" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Electronics</Link>
-              <Link to="/products?category=footwear" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Footwear</Link>
-              <Link to="/products?category=fitness" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Fitness</Link>
-              <Link to="/products?category=accessories" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Accessories</Link>
-              <Link to="/products?category=home" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 py-1">Home</Link>
+            <div className="flex flex-col gap-1">
+              {["Electronics", "Footwear", "Fitness", "Accessories", "Home"].map((cat) => (
+                <Link 
+                  key={cat}
+                  to={`/products?category=${cat.toLowerCase()}`} 
+                  onClick={() => setMobileOpen(false)} 
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 py-3 px-1 transition-colors"
+                >
+                  {cat}
+                </Link>
+              ))}
 
-              <div className="border-t my-2" />
+              <div className="border-t border-gray-100 my-4" />
 
               {isAuthenticated ? (
-                <>
-                  <div className="flex items-center gap-2 py-1">
-                    <User className="h-4 w-4 text-gray-500" />
-                    <span className="text-sm font-medium">{user?.name}</span>
-                    {isAdmin && <Badge variant="secondary" className="text-[10px]">Admin</Badge>}
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center gap-3 px-1">
+                    <div className="h-8 w-8 rounded-full bg-gray-100 flex items-center justify-center">
+                      <User className="h-4 w-4 text-gray-500" />
+                    </div>
+                    <span className="text-sm font-bold text-gray-900">{user?.name}</span>
                   </div>
-                  <Link to="/orders" onClick={() => setMobileOpen(false)} className="text-sm text-gray-700 flex items-center gap-2 py-1">
-                    <ClipboardList className="h-4 w-4" />
+                  <Link 
+                    to="/orders" 
+                    onClick={() => setMobileOpen(false)} 
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center gap-3 py-1 px-1 transition-colors"
+                  >
+                    <ClipboardList className="h-5 w-5 text-gray-400" />
                     My Orders
                   </Link>
-                  <button onClick={handleLogout} className="text-sm text-gray-700 flex items-center gap-2 py-1 text-left">
-                    <LogOut className="h-4 w-4" />
+                  <button 
+                    onClick={handleLogout} 
+                    className="text-sm font-medium text-gray-600 hover:text-gray-900 flex items-center gap-3 py-1 px-1 text-left transition-colors"
+                  >
+                    <LogOut className="h-5 w-5 text-gray-400" />
                     Logout
                   </button>
-                </>
+                </div>
               ) : (
-                <>
-                  <Link to="/login" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 flex items-center gap-2 py-1">
-                    <User className="h-4 w-4" />
+                <div className="flex flex-col gap-4">
+                  <Link to="/login" onClick={() => setMobileOpen(false)} className="text-sm font-bold text-gray-900 flex items-center gap-3 py-1 px-1">
+                    <User className="h-5 w-5 text-gray-400" />
                     Account
                   </Link>
-                  <Link to="/register" onClick={() => setMobileOpen(false)} className="text-sm font-medium text-gray-700 flex items-center gap-2 py-1">
+                  <Link to="/register" onClick={() => setMobileOpen(false)} className="text-sm font-bold text-[#1b4332] flex items-center gap-2 py-1 px-1">
                     Get Started
                   </Link>
-                </>
+                </div>
               )}
             </div>
           </SheetContent>
