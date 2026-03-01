@@ -29,14 +29,7 @@ const Login = () => {
   return (
     <div className="flex min-h-screen bg-[#faf9f8]">
       {/* ─── LEFT SIDE (FORM) ───────────────────────── */}
-      <div className="w-full lg:w-1/2 flex flex-col px-8 md:px-16 lg:px-24 py-12">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2 mb-20">
-          <ShoppingBag className="h-6 w-6 text-[#7a5c46]" />
-          <span className="text-xl font-bold tracking-widest text-[#7a5c46] uppercase">
-            Luxora
-          </span>
-        </Link>
+      <div className="w-full lg:w-1/2 flex flex-col px-8 md:px-16 lg:px-24 py-12 justify-center">
 
         {/* Form Container */}
         <div className="w-full max-w-sm mx-auto flex-1 flex flex-col justify-center">
@@ -137,8 +130,8 @@ const Login = () => {
       </div>
 
       {/* ─── RIGHT SIDE (IMAGE) ──────────────────────── */}
-      <div className="hidden lg:block lg:w-1/2 p-4">
-        <div className="w-full h-full rounded-[2rem] overflow-hidden bg-[#e6ddd5] relative">
+      <div className="hidden lg:flex lg:w-1/2 p-8 lg:p-12 xl:p-24 justify-center items-center relative">
+        <div className="w-full max-w-[480px] aspect-[4/5] rounded-[2rem] overflow-hidden bg-[#e6ddd5] relative shadow-xl">
           <img
             src="https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=1000&auto=format&fit=crop&q=80"
             alt="Minimalist Chair"
