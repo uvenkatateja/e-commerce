@@ -40,6 +40,23 @@ const OrderHistory = () => {
     navigate("/");
   };
 
+  const onShippingOrders = orders.filter(
+    (o) => o.paymentStatus === "paid" && new Date(o.createdAt).getTime() + 7 * 24 * 60 * 60 * 1000 > Date.now()
+  );
+  
+  const arrivedOrders = orders.filter(
+    (o) => o.paymentStatus === "paid" && new Date(o.createdAt).getTime() + 7 * 24 * 60 * 60 * 1000 <= Date.now()
+  );
+
+  const canceledOrders = orders.filter(
+    (o) => o.paymentStatus !== "paid"
+  );
+
+  let displayedOrders = [];
+  if (activeTab === "shipping") displayedOrders = onShippingOrders;
+  if (activeTab === "arrived") displayedOrders = arrivedOrders;
+  if (activeTab === "canceled") displayedOrders = canceledOrders;
+
   const menuItems = [
     { icon: User, label: "Profile", id: "profile" },
     { icon: Heart, label: "Wishlist", id: "wishlist" },
@@ -102,7 +119,7 @@ const OrderHistory = () => {
               <span className={`flex items-center justify-center w-[18px] h-[18px] rounded-full text-[10px] pb-px ${
                 activeTab === "shipping" ? "bg-gray-900 text-white" : "bg-gray-300 text-gray-600"
               }`}>
-                {orders.length}
+                {onShippingOrders.length}
               </span>
             </button>
             <button 
@@ -114,7 +131,9 @@ const OrderHistory = () => {
               }`}
             >
               <span className="opacity-90">Arrived</span>
-              <span className="text-gray-400 text-xs ml-0.5">2</span>
+              <span className={`flex items-center justify-center w-[18px] h-[18px] rounded-full text-[10px] pb-px ${
+                activeTab === "arrived" ? "bg-gray-900 text-white" : "bg-gray-300 text-gray-600"
+              }`}>{arrivedOrders.length}</span>
             </button>
             <button 
               onClick={() => setActiveTab("canceled")}
@@ -125,6 +144,9 @@ const OrderHistory = () => {
               }`}
             >
               <span className="opacity-90">Canceled</span>
+              <span className={`flex items-center justify-center w-[18px] h-[18px] rounded-full text-[10px] pb-px ${
+                activeTab === "canceled" ? "bg-gray-900 text-white" : "bg-gray-300 text-gray-600"
+              }`}>{canceledOrders.length}</span>
             </button>
           </div>
 
@@ -135,14 +157,14 @@ const OrderHistory = () => {
                 <div className="h-64 bg-gray-100 rounded-[2rem] w-full"></div>
                 <div className="h-64 bg-gray-100 rounded-[2rem] w-full"></div>
               </div>
-            ) : orders.length === 0 ? (
+            ) : displayedOrders.length === 0 ? (
               <div className="py-16 border-2 border-dashed border-gray-200 rounded-[2.5rem] text-center bg-gray-50/50">
                 <ShoppingBag className="mx-auto h-12 w-12 text-gray-300 mb-4" />
                 <h3 className="text-lg font-bold text-gray-900 mb-1">No Orders Found</h3>
-                <p className="text-gray-500 font-medium text-sm">You haven't placed any orders yet.</p>
+                <p className="text-gray-500 font-medium text-sm">You haven't placed any orders here yet.</p>
               </div>
             ) : (
-              orders.map((order) => (
+              displayedOrders.map((order) => (
                 <div key={order._id} className="border border-gray-100 shadow-[0_4px_24px_-12px_rgba(0,0,0,0.05)] bg-white rounded-[2.5rem] p-6 lg:p-8 hover:border-gray-200 transition-colors">
                   
                   {/* Order Header */}
@@ -157,7 +179,7 @@ const OrderHistory = () => {
                     <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#fff4ec] border border-[#ffe0cc]">
                       <div className="w-[6px] h-[6px] rounded-full bg-[#f87834]"></div>
                       <span className="text-[11px] font-black tracking-wide uppercase text-[#e9641d]">
-                        {order.paymentStatus === 'paid' ? 'On Deliver' : 'Pending'}
+                        {activeTab === 'shipping' ? 'On Deliver' : activeTab === 'arrived' ? 'Delivered' : 'Canceled'}
                       </span>
                     </div>
                   </div>
@@ -185,8 +207,8 @@ const OrderHistory = () => {
                       <div key={idx} className="flex gap-6 border border-gray-100/80 rounded-3xl p-3 pr-6 items-center bg-[#fafafa]">
                         {/* Placeholder image matched to aesthetic */}
                         <div className="w-20 h-24 md:w-24 md:h-28 bg-[#d8dbdf] rounded-2xl flex-shrink-0 overflow-hidden relative">
-                           {item.image ? (
-                             <img src={item.image} alt={item.title} className="w-full h-full object-cover mix-blend-multiply" />
+                           {item.productId?.imageUrl ? (
+                             <img src={item.productId.imageUrl} alt={item.title} className="w-full h-full object-cover mix-blend-multiply" />
                            ) : idx % 2 === 0 ? (
                              // Mock image 1 for aesthetic missing images
                              <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=200&h=200&fit=crop" alt="Jacket" className="w-full h-full object-cover mix-blend-multiply" />

@@ -133,6 +133,7 @@ const createCheckoutSession = async (req, res, next) => {
 const getMyOrders = async (req, res, next) => {
     try {
         const orders = await Order.find({ userId: req.user._id })
+            .populate("items.productId", "imageUrl category")
             .sort({ createdAt: -1 })
             .lean();
 
