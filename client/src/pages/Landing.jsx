@@ -185,6 +185,35 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* ─── PRODUCTS SECTION ─────────────────────────────────── */}
+      <section className="container mx-auto px-4 py-8">
+        <h2 className="text-2xl font-bold mb-6">Products For You!</h2>
+
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="aspect-square bg-muted rounded-xl animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
+            {products.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        )}
+
+        {/* View All Button */}
+        <div className="text-center mt-8">
+          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
+            <Link to="/products">
+              View All Products
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
+      </section>
+
       {/* ─── TOP SELLING COLLECTION ───────────────────────────── */}
       <section className="container mx-auto px-4 py-16 md:py-24">
         <div className="flex flex-col lg:flex-row items-start lg:items-end justify-between mb-16 gap-6">
@@ -364,35 +393,6 @@ const Landing = () => {
           <div className="bg-[#9db1a8] rounded-[2rem] overflow-hidden min-h-[260px] md:min-h-[280px] relative">
             <img src="/summer-cloth-discount.png" alt="Summer Cloth 30% Off" className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500" />
           </div>
-        </div>
-      </section>
-
-      {/* ─── PRODUCTS SECTION ─────────────────────────────────── */}
-      <section className="container mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-6">Products For You!</h2>
-
-        {loading ? (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="aspect-square bg-muted rounded-xl animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-            {products.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
-        )}
-
-        {/* View All Button */}
-        <div className="text-center mt-8">
-          <Button asChild variant="outline" size="lg" className="rounded-full px-8">
-            <Link to="/products">
-              View All Products
-              <ChevronRight className="ml-1 h-4 w-4" />
-            </Link>
-          </Button>
         </div>
       </section>
 
