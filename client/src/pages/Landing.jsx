@@ -310,6 +310,45 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* ─── SERVICES TO HELP YOU SHOP ────────────────────────── */}
+      <section className="container mx-auto px-4 py-10">
+        <div className="border-t pt-10">
+          <h2 className="text-xl font-bold mb-6">Services To Help You Shop</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {/* FAQ Card */}
+            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
+              <div className="p-5">
+                <h3 className="font-bold text-lg mb-1">Frequently Asked Questions</h3>
+                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
+              </div>
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src="/service-faq.png" alt="FAQ" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+            {/* Payment Card */}
+            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
+              <div className="p-5">
+                <h3 className="font-bold text-lg mb-1">Online Payment Process</h3>
+                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
+              </div>
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src="/service-payment.png" alt="Online Payment" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+            {/* Delivery Card */}
+            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
+              <div className="p-5">
+                <h3 className="font-bold text-lg mb-1">Home Delivery Options</h3>
+                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
+              </div>
+              <div className="aspect-[4/3] overflow-hidden">
+                <img src="/service-delivery.png" alt="Home Delivery" className="w-full h-full object-cover" loading="lazy" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ─── WHY CHOOSE US ─────────────────────────────────────── */}
       <section className="container mx-auto px-4 py-12">
         <div className="grid lg:grid-cols-2 gap-4 lg:gap-6 items-stretch">
@@ -346,46 +385,6 @@ const Landing = () => {
                 isOpen={openAccordion === 3} 
                 onClick={() => setOpenAccordion(openAccordion === 3 ? null : 3)} 
               />
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ─── SERVICES TO HELP YOU SHOP ────────────────────────── */}
-      <section className="container mx-auto px-4 py-10">
-        <div className="border-t pt-10">
-          <h2 className="text-xl font-bold mb-6">Services To Help You Shop</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {/* FAQ Card */}
-            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
-              <div className="p-5">
-                <h3 className="font-bold text-lg mb-1">Frequently Asked Questions</h3>
-                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
-              </div>
-              <div className="aspect-[4/3] overflow-hidden">
-                <img src="/service-faq.png" alt="FAQ" className="w-full h-full object-cover" loading="lazy" />
-              </div>
-            </div>
-            {/* Payment Card */}
-            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
-              <div className="p-5">
-                <h3 className="font-bold text-lg mb-1">Online Payment Process</h3>
-                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
-              </div>
-              <div className="aspect-[4/3] overflow-hidden">
-                <img src="/service-payment.png" alt="Online Payment" className="w-full h-full object-cover" loading="lazy" />
-              </div>
-            </div>
-            {/* Delivery Card */}
-            <div className="rounded-xl overflow-hidden bg-white border hover:shadow-md transition-shadow">
-              <div className="p-5">
-                <h3 className="font-bold text-lg mb-1">Home Delivery Options</h3>
-                <p className="text-sm text-muted-foreground">Updates on safe Shopping in our Stores</p>
-              </div>
-              <div className="aspect-[4/3] overflow-hidden">
-                <img src="/service-delivery.png" alt="Home Delivery" className="w-full h-full object-cover" loading="lazy" />
-              </div>
             </div>
           </div>
         </div>
