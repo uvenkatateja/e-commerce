@@ -351,50 +351,6 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* ─── HIGHLIGHT CARDS ──────────────────────────────────── */}
-      <section className="container mx-auto px-4 py-8 mb-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          <div className="bg-[#fcece3] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between items-start min-h-[260px] md:min-h-[280px]">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 max-w-[150px] leading-tight">100% Authentic Product</h3>
-              <p className="text-[13px] text-gray-600 font-medium leading-[1.6] mb-8 max-w-[160px]">
-                Prominently display a clear "100% Authentic Guarantee" on your product
-              </p>
-            </div>
-            <Button variant="outline" className="rounded-full px-6 h-9 font-semibold text-xs border-gray-400 bg-transparent text-gray-900 hover:bg-white/50">
-              See More
-            </Button>
-          </div>
-
-          <div className="bg-[#f5f6f8] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between items-start min-h-[260px] md:min-h-[280px]">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 max-w-[150px] leading-tight">Free & Easy Return</h3>
-              <p className="text-[13px] text-gray-600 font-medium leading-[1.6] mb-8 max-w-[150px]">
-                Provide customers with prepaid return labels to make the process hassle-free.
-              </p>
-            </div>
-            <Button variant="outline" className="rounded-full px-6 h-9 font-semibold text-xs border-gray-400 bg-transparent text-gray-900 hover:bg-black hover:text-white hover:border-black">
-              See More
-            </Button>
-          </div>
-
-          <div className="bg-[#f5f6f8] rounded-[2rem] p-8 md:p-10 flex flex-col justify-between items-start min-h-[260px] md:min-h-[280px]">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 max-w-[150px] leading-tight">Safe Payments</h3>
-              <p className="text-[13px] text-gray-600 font-medium leading-[1.6] mb-8 max-w-[160px]">
-                Use fraud detection tools to identify suspicious activity, such as unusual purchase
-              </p>
-            </div>
-            <Button variant="outline" className="rounded-full px-6 h-9 font-semibold text-xs border-gray-400 bg-transparent text-gray-900 hover:bg-black hover:text-white hover:border-black">
-              See More
-            </Button>
-          </div>
-
-          <div className="bg-[#9db1a8] rounded-[2rem] overflow-hidden min-h-[260px] md:min-h-[280px] relative">
-            <img src="/summer-cloth-discount.png" alt="Summer Cloth 30% Off" className="w-full h-full object-cover hover:scale-[1.03] transition-transform duration-500" />
-          </div>
-        </div>
-      </section>
 
       {/* ─── SERVICES TO HELP YOU SHOP ────────────────────────── */}
       <section className="container mx-auto px-4 py-10">
