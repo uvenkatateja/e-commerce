@@ -13,6 +13,7 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import CurrencySelector from "../components/CurrencySelector";
 
 const WhatsNew = () => {
   const [products, setProducts] = useState([]);
@@ -47,8 +48,7 @@ const WhatsNew = () => {
             <Link to="/products" className="font-semibold hover:underline">Shop Now</Link>
           </div>
           <div className="flex items-center gap-3 text-[11px]">
-            <span>Eng ▾</span>
-            <span>Location ▾</span>
+            <CurrencySelector compact dark />
           </div>
         </div>
       </div>

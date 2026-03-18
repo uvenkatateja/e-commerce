@@ -4,10 +4,13 @@ import AdminLayout from "../../components/AdminLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BarChart3, DollarSign, ShoppingCart, Package, TrendingUp, Users } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
+import CurrencySelector from "../../components/CurrencySelector";
 
 const AdminAnalytics = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -37,8 +40,8 @@ const AdminAnalytics = () => {
   }
 
   const avgOrderValue = stats?.totalOrders > 0
-    ? (stats.totalRevenue / stats.totalOrders).toFixed(2)
-    : "0.00";
+    ? formatPrice(stats.totalRevenue / stats.totalOrders)
+    : formatPrice(0);
 
   const conversionRate = stats?.totalUsers > 0
     ? ((stats.totalOrders / stats.totalUsers) * 100).toFixed(1)
@@ -47,7 +50,7 @@ const AdminAnalytics = () => {
   const analyticsCards = [
     {
       title: "Total Revenue",
-      value: `$${stats?.totalRevenue?.toFixed(2) || "0.00"}`,
+      value: formatPrice(stats?.totalRevenue || 0),
       icon: DollarSign,
       color: "text-green-600",
       bg: "bg-green-100",
@@ -75,7 +78,7 @@ const AdminAnalytics = () => {
     },
     {
       title: "Avg. Order Value",
-      value: `$${avgOrderValue}`,
+      value: avgOrderValue,
       icon: TrendingUp,
       color: "text-cyan-600",
       bg: "bg-cyan-100",
@@ -95,6 +98,7 @@ const AdminAnalytics = () => {
         <h1 className="text-xl font-bold">Analytics</h1>
         <p className="text-sm text-muted-foreground">Store performance overview</p>
       </div>
+      <CurrencySelector compact className="mb-4" />
 
       {/* Analytics Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">

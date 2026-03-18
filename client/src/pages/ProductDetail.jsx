@@ -22,6 +22,8 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import { useCurrency } from "../context/CurrencyContext";
+import CurrencySelector from "../components/CurrencySelector";
 
 // Color swatches (decorative since our products don't have color variants)
 const colorOptions = [
@@ -36,6 +38,7 @@ const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
+  const { formatPrice, currency, rates } = useCurrency();
 
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -68,8 +71,11 @@ const ProductDetail = () => {
 
     setBuying(true);
     try {
+      const currentRate = rates[currency] || 1;
       const { data } = await api.post("/orders/checkout", {
         items: [{ productId: product._id, quantity }],
+        currency: currency,
+        currencyRate: currentRate,
       });
       window.location.href = data.data.url;
     } catch (error) {
@@ -94,8 +100,7 @@ const ProductDetail = () => {
               <Link to="/products" className="font-semibold hover:underline">Shop Now</Link>
             </div>
             <div className="flex items-center gap-3 text-[11px]">
-              <span>Eng ▾</span>
-              <span>Location ▾</span>
+              <CurrencySelector compact dark />
             </div>
           </div>
         </div>
@@ -119,7 +124,7 @@ const ProductDetail = () => {
 
   const isOutOfStock = product.stockQuantity === 0;
   const isLowStock = product.stockQuantity > 0 && product.stockQuantity <= 10;
-  const monthlyPrice = (product.price / 6).toFixed(2);
+  const monthlyPrice = formatPrice(product.price / 6);
 
   return (
     <div className="min-h-screen">
@@ -136,8 +141,7 @@ const ProductDetail = () => {
             <Link to="/products" className="font-semibold hover:underline">Shop Now</Link>
           </div>
           <div className="flex items-center gap-3 text-[11px]">
-            <span>Eng ▾</span>
-            <span>Location ▾</span>
+            <CurrencySelector compact dark />
           </div>
         </div>
       </div>
@@ -221,7 +225,7 @@ const ProductDetail = () => {
             {/* Price */}
             <div>
               <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold">${product.price.toFixed(2)}</span>
+                <span className="text-3xl font-bold">{formatPrice(product.price)}</span>
                 <span className="text-sm text-muted-foreground">
                   or {monthlyPrice}/month
                 </span>

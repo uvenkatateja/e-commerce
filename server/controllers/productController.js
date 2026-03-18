@@ -1,5 +1,6 @@
 const { validationResult, body } = require("express-validator");
 const Product = require("../models/Product");
+const PriceHistory = require("../models/PriceHistory");
 
 // ─── VALIDATION RULES ────────────────────────────────────────
 const productValidation = [
@@ -185,6 +186,9 @@ const updateProduct = async (req, res, next) => {
         const { title, description, price, category, stockQuantity, imageUrl } =
             req.body;
 
+        // Track price changes for admin history
+        const oldPrice = product.price;
+
         product.title = title ?? product.title;
         product.description = description ?? product.description;
         product.price = price ?? product.price;
@@ -193,6 +197,19 @@ const updateProduct = async (req, res, next) => {
         product.imageUrl = imageUrl ?? product.imageUrl;
 
         const updatedProduct = await product.save();
+
+        // If price changed, log it to PriceHistory
+        if (price !== undefined && price !== oldPrice) {
+            await PriceHistory.create({
+                productId: product._id,
+                productTitle: product.title,
+                oldPrice,
+                newPrice: price,
+                changedBy: req.user._id,
+                currency: "USD",
+            });
+        }
+
         res.json({ success: true, data: updatedProduct });
     } catch (error) {
         if (error.name === "CastError") {

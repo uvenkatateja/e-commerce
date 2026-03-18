@@ -4,12 +4,14 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Package, ShoppingCart, Heart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCurrency } from "../context/CurrencyContext";
 
 /**
  * ProductCard — Shopcart-style product card for the user-facing grid.
  * Wrapped with React.memo for performance optimization.
  */
 const ProductCard = memo(({ product }) => {
+  const { formatPrice } = useCurrency();
   const isLowStock = product.stockQuantity <= 10 && product.stockQuantity > 0;
   const isOutOfStock = product.stockQuantity === 0;
 
@@ -59,7 +61,7 @@ const ProductCard = memo(({ product }) => {
             </h3>
           </Link>
           <span className="font-bold text-sm whitespace-nowrap">
-            ${product.price.toFixed(2)}
+            {formatPrice(product.price)}
           </span>
         </div>
 

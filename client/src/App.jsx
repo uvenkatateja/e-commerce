@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { CurrencyProvider } from "./context/CurrencyContext";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Navbar from "./components/Navbar";
@@ -149,11 +150,13 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <TooltipProvider>
-          <AppContent />
-        </TooltipProvider>
-      </Router>
+      <CurrencyProvider>
+        <Router>
+          <TooltipProvider>
+            <AppContent />
+          </TooltipProvider>
+        </Router>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }

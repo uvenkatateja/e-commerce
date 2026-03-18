@@ -11,10 +11,13 @@ import {
   LogOut, 
   Truck
 } from "lucide-react";
+import { useCurrency } from "../context/CurrencyContext";
+import CurrencySelector from "../components/CurrencySelector";
 
 const OrderHistory = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { formatPrice, currency } = useCurrency();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("shipping");
@@ -325,7 +328,7 @@ const OrderHistory = () => {
                               <h4 className="font-bold text-gray-900 text-[13px] md:text-sm mb-1.5 line-clamp-2 pr-2">{item.title}</h4>
                               <div className="flex items-center gap-1.5 flex-wrap">
                                 <p className="text-[13px] md:text-sm font-bold text-gray-900">
-                                  Rp {(item.priceAtPurchase * 15000).toLocaleString('id-ID')}
+                                  {formatPrice(item.priceAtPurchase)}
                                 </p>
                                 <span className="text-gray-400 font-semibold text-xs ml-0.5 opacity-80">x{item.quantity}</span>
                               </div>
@@ -340,7 +343,7 @@ const OrderHistory = () => {
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-6 border-t border-gray-50/50">
                         <div className="text-[12px] lg:text-[13px] font-bold text-gray-500">
-                          Total: <span className="font-bold text-gray-900 ml-1 text-[13px] lg:text-sm">Rp {(order.totalAmount * 15000).toLocaleString('id-ID')}</span>
+                          Total: <span className="font-bold text-gray-900 ml-1 text-[13px] lg:text-sm">{formatPrice(order.totalAmount)}</span>
                         </div>
                         <button className="px-5 lg:px-6 py-2.5 bg-[#f4f4f4] hover:bg-[#eaeaea] text-gray-900 text-[10px] lg:text-[11px] font-bold rounded-full transition-colors uppercase tracking-wider">
                           Details

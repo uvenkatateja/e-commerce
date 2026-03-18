@@ -32,7 +32,20 @@ import {
   Search,
   ChevronLeft,
   ChevronRight,
+  History,
+  TrendingUp,
+  TrendingDown,
+  ArrowRight,
 } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 const ManageProducts = () => {
   const [products, setProducts] = useState([]);
@@ -45,6 +58,10 @@ const ManageProducts = () => {
   const [categories, setCategories] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
+  const [historyDialog, setHistoryDialog] = useState({ open: false, product: null });
+  const [priceHistory, setPriceHistory] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const { formatPrice } = useCurrency();
 
   const fetchProducts = async () => {
     try {
@@ -99,6 +116,20 @@ const ManageProducts = () => {
       toast.error(error.response?.data?.message || "Delete failed");
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const fetchPriceHistory = async (product) => {
+    setHistoryLoading(true);
+    setHistoryDialog({ open: true, product });
+    try {
+      const { data } = await api.get(`/admin/price-history?productId=${product._id}&limit=20`);
+      setPriceHistory(data.data.history);
+    } catch (error) {
+      console.error("Failed to fetch price history:", error);
+      toast.error("Failed to load price history");
+    } finally {
+      setHistoryLoading(false);
     }
   };
 
@@ -257,7 +288,7 @@ const ManageProducts = () => {
                   {/* Price + Stock Row */}
                   <div className="flex items-center justify-between">
                     <span className="font-bold text-base">
-                      ${product.price.toFixed(2)}
+                      {formatPrice(product.price)}
                     </span>
                     <span className="text-[11px] text-muted-foreground">
                       {product.stockQuantity} in stock
@@ -301,6 +332,15 @@ const ManageProducts = () => {
                         <Eye className="h-3 w-3 mr-1" />
                         View
                       </Link>
+                    </Button>
+                     <Button
+                      variant="ghost"
+                      size="sm"
+                      className="flex-1 h-7 text-[11px] px-1 text-muted-foreground hover:text-foreground"
+                      onClick={() => fetchPriceHistory(product)}
+                    >
+                      <History className="h-3 w-3 mr-1" />
+                      History
                     </Button>
                     <Button
                       variant="ghost"
@@ -395,6 +435,89 @@ const ManageProducts = () => {
               disabled={deleting}
             >
               {deleting ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Price History Dialog */}
+      <Dialog
+        open={historyDialog.open}
+        onOpenChange={(open) => !open && setHistoryDialog({ open: false, product: null })}
+      >
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <History className="h-5 w-5 text-blue-600" />
+              Price History: {historyDialog.product?.title}
+            </DialogTitle>
+            <DialogDescription>
+              Chronological log of pricing updates for this product
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex-1 overflow-y-auto pr-2 py-4">
+            {historyLoading ? (
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Skeleton key={i} className="h-12 w-full rounded-lg" />
+                ))}
+              </div>
+            ) : priceHistory.length === 0 ? (
+              <div className="text-center py-10">
+                <History className="h-10 w-10 text-muted-foreground/30 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">No price changes recorded yet.</p>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="text-[10px] uppercase">Date</TableHead>
+                    <TableHead className="text-[10px] uppercase">Old Price</TableHead>
+                    <TableHead className="text-[10px] uppercase text-center">Change</TableHead>
+                    <TableHead className="text-[10px] uppercase">New Price</TableHead>
+                    <TableHead className="text-[10px] uppercase">By</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {priceHistory.map((entry) => {
+                    const diff = entry.newPrice - entry.oldPrice;
+                    const percent = entry.oldPrice > 0 ? ((diff / entry.oldPrice) * 100).toFixed(1) : 0;
+                    const isUp = diff > 0;
+                    return (
+                      <TableRow key={entry._id} className="text-xs">
+                        <TableCell className="whitespace-nowrap">
+                          {new Date(entry.createdAt).toLocaleDateString()}
+                          <span className="block text-[10px] text-muted-foreground">
+                            {new Date(entry.createdAt).toLocaleTimeString()}
+                          </span>
+                        </TableCell>
+                        <TableCell className="font-mono text-muted-foreground">
+                          {formatPrice(entry.oldPrice)}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <div className={`flex items-center justify-center gap-0.5 ${isUp ? "text-red-500" : "text-green-500"} font-bold`}>
+                            {isUp ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />}
+                            {isUp ? "+" : ""}{percent}%
+                          </div>
+                        </TableCell>
+                        <TableCell className="font-mono font-bold">
+                          {formatPrice(entry.newPrice)}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground capitalize">
+                          {entry.changedBy?.name || "System"}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setHistoryDialog({ open: false, product: null })}>
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>

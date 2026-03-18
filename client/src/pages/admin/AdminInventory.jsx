@@ -13,10 +13,13 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Warehouse, AlertTriangle, Package } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
+import CurrencySelector from "../../components/CurrencySelector";
 
 const AdminInventory = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -59,6 +62,9 @@ const AdminInventory = () => {
       <div className="mb-6">
         <h1 className="text-xl font-bold">Inventory Management</h1>
         <p className="text-sm text-muted-foreground">Track stock levels across all products</p>
+      </div>
+      <div className="mb-6 flex justify-end">
+        <CurrencySelector compact />
       </div>
 
       {/* Summary Cards */}
@@ -131,11 +137,11 @@ const AdminInventory = () => {
                       </div>
                     </TableCell>
                     <TableCell className="text-xs capitalize">{product.category}</TableCell>
-                    <TableCell className="text-xs font-medium">${product.price.toFixed(2)}</TableCell>
+                    <TableCell className="text-xs font-medium">{formatPrice(product.price)}</TableCell>
                     <TableCell className="text-xs font-mono">{product.stockQuantity}</TableCell>
                     <TableCell>{getStockBadge(product.stockQuantity)}</TableCell>
                     <TableCell className="text-xs font-medium">
-                      ${(product.price * product.stockQuantity).toFixed(2)}
+                      {formatPrice(product.price * product.stockQuantity)}
                     </TableCell>
                   </TableRow>
                 ))}

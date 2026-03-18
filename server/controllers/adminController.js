@@ -1,6 +1,7 @@
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const User = require("../models/User");
+const PriceHistory = require("../models/PriceHistory");
 
 // ─── GET ADMIN DASHBOARD STATS ───────────────────────────────
 /**
@@ -107,7 +108,54 @@ const getAllOrders = async (req, res, next) => {
     }
 };
 
+// ─── GET PRICE CHANGE HISTORY ────────────────────────────────
+/**
+ * @desc    Get history of all product price changes
+ * @route   GET /api/admin/price-history
+ * @access  Admin
+ *
+ * Returns paginated list of price changes, newest first.
+ * Each entry shows: product name, old price, new price, who changed it, when.
+ */
+const getPriceHistory = async (req, res, next) => {
+    try {
+        const { page = 1, limit = 50, productId } = req.query;
+        const pageNum = Math.max(1, parseInt(page, 10) || 1);
+        const limitNum = Math.min(100, Math.max(1, parseInt(limit, 10) || 50));
+        const skip = (pageNum - 1) * limitNum;
+
+        const filter = {};
+        if (productId) filter.productId = productId;
+
+        const [history, totalCount] = await Promise.all([
+            PriceHistory.find(filter)
+                .populate("changedBy", "name email")
+                .sort({ createdAt: -1 })
+                .skip(skip)
+                .limit(limitNum)
+                .lean(),
+            PriceHistory.countDocuments(filter),
+        ]);
+
+        res.json({
+            success: true,
+            data: {
+                history,
+                pagination: {
+                    currentPage: pageNum,
+                    totalPages: Math.ceil(totalCount / limitNum),
+                    totalRecords: totalCount,
+                    limit: limitNum,
+                },
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getAdminStats,
     getAllOrders,
+    getPriceHistory,
 };

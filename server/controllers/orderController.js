@@ -23,13 +23,17 @@ const Product = require("../models/Product");
  */
 const createCheckoutSession = async (req, res, next) => {
     try {
-        const { items } = req.body;
+        const { items, currency = "USD", currencyRate = 1 } = req.body;
 
         // Validate items array
         if (!items || !Array.isArray(items) || items.length === 0) {
             res.status(400);
             throw new Error("Please provide items to checkout");
         }
+
+        const selectedCurrency = currency.toLowerCase();
+        const zeroDecimalCurrencies = ["jpy", "krw"];
+        const isZeroDecimal = zeroDecimalCurrencies.includes(selectedCurrency);
 
         // Validate each item and build order items + Stripe line items
         const orderItems = [];
@@ -66,15 +70,21 @@ const createCheckoutSession = async (req, res, next) => {
                 priceAtPurchase: product.price,
             });
 
+            // Calculate converted price
+            const convertedPrice = product.price * currencyRate;
+            const unitAmount = isZeroDecimal 
+                ? Math.round(convertedPrice) // No cents for JPY/KRW
+                : Math.round(convertedPrice * 100); // Multiply by 100 for cents
+
             // Build Stripe line item
             lineItems.push({
                 price_data: {
-                    currency: "usd",
+                    currency: selectedCurrency,
                     product_data: {
                         name: product.title,
                         description: product.description.substring(0, 200),
                     },
-                    unit_amount: Math.round(product.price * 100), // Stripe uses cents
+                    unit_amount: unitAmount,
                 },
                 quantity: parseInt(quantity, 10),
             });

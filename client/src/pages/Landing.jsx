@@ -15,6 +15,8 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import { useCurrency } from "../context/CurrencyContext";
+import CurrencySelector from "../components/CurrencySelector";
 
 // ─── HERO CAROUSEL DATA (5 ADS) ────────────────────────────────
 const heroSlides = [
@@ -70,6 +72,7 @@ const Landing = () => {
   const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [openAccordion, setOpenAccordion] = useState(2); // Unrivaled Variety open by default
+  const { formatPrice } = useCurrency();
 
   // Fetch products
   useEffect(() => {
@@ -117,8 +120,7 @@ const Landing = () => {
             </Link>
           </div>
           <div className="flex items-center gap-3 text-[11px]">
-            <span>Eng ▾</span>
-            <span>Location ▾</span>
+            <CurrencySelector compact dark />
           </div>
         </div>
       </div>
@@ -250,7 +252,7 @@ const Landing = () => {
                   <span>(3.4)</span>
                 </div>
               </div>
-              <span className="font-bold text-gray-900">$150</span>
+              <span className="font-bold text-gray-900">{formatPrice(150)}</span>
             </div>
           </div>
 
@@ -267,7 +269,7 @@ const Landing = () => {
                   <span>(3.2)</span>
                 </div>
               </div>
-              <span className="font-bold text-gray-900">$120</span>
+              <span className="font-bold text-gray-900">{formatPrice(120)}</span>
             </div>
           </div>
 
@@ -284,7 +286,7 @@ const Landing = () => {
                   <span>(4.2)</span>
                 </div>
               </div>
-              <span className="font-bold text-gray-900">$67</span>
+              <span className="font-bold text-gray-900">{formatPrice(67)}</span>
             </div>
           </div>
 
@@ -304,7 +306,7 @@ const Landing = () => {
                   <span>(4.2)</span>
                 </div>
               </div>
-              <span className="font-bold text-gray-900">$67</span>
+              <span className="font-bold text-gray-900">{formatPrice(67)}</span>
             </div>
           </div>
         </div>
@@ -463,6 +465,7 @@ const Landing = () => {
 
 // ─── PRODUCT CARD COMPONENT ──────────────────────────────────
 const ProductCard = ({ product }) => {
+  const { formatPrice } = useCurrency();
   return (
     <Card className="group overflow-hidden border hover:shadow-lg transition-all duration-300 bg-white">
       {/* Image */}
@@ -509,7 +512,7 @@ const ProductCard = ({ product }) => {
             </h3>
           </Link>
           <span className="font-bold text-sm whitespace-nowrap">
-            ${product.price.toFixed(2)}
+            {formatPrice(product.price)}
           </span>
         </div>
 

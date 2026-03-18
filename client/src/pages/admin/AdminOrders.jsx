@@ -13,10 +13,13 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ShoppingCart, Package } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
+import CurrencySelector from "../../components/CurrencySelector";
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -61,6 +64,7 @@ const AdminOrders = () => {
           <h1 className="text-xl font-bold">Order Management</h1>
           <p className="text-sm text-muted-foreground">{orders.length} total orders</p>
         </div>
+        <CurrencySelector compact />
       </div>
 
       {/* Summary Cards */}
@@ -83,7 +87,7 @@ const AdminOrders = () => {
           <CardContent className="pt-5 pb-4">
             <p className="text-[11px] font-medium text-muted-foreground uppercase tracking-wide">Total Revenue</p>
             <p className="text-2xl font-bold mt-1">
-              ${orders.filter((o) => o.paymentStatus === "paid").reduce((sum, o) => sum + o.totalAmount, 0).toFixed(2)}
+              {formatPrice(orders.filter((o) => o.paymentStatus === "paid").reduce((sum, o) => sum + o.totalAmount, 0))}
             </p>
           </CardContent>
         </Card>
@@ -126,7 +130,7 @@ const AdminOrders = () => {
                       <p className="text-[10px] text-muted-foreground">{order.userId?.email || ""}</p>
                     </TableCell>
                     <TableCell className="text-xs">{order.items.length} items</TableCell>
-                    <TableCell className="font-medium text-xs">${order.totalAmount.toFixed(2)}</TableCell>
+                    <TableCell className="font-medium text-xs">{formatPrice(order.totalAmount)}</TableCell>
                     <TableCell>{getStatusBadge(order.paymentStatus)}</TableCell>
                     <TableCell className="text-[11px] text-muted-foreground">
                       {new Date(order.createdAt).toLocaleDateString()}

@@ -23,11 +23,14 @@ import {
   TrendingUp,
   ArrowUpRight,
 } from "lucide-react";
+import { useCurrency } from "../../context/CurrencyContext";
+import CurrencySelector from "../../components/CurrencySelector";
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [recentOrders, setRecentOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { formatPrice } = useCurrency();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -85,7 +88,7 @@ const Dashboard = () => {
   const statCards = [
     {
       title: "Total Revenue",
-      value: `$${stats?.totalRevenue?.toFixed(2) || "0.00"}`,
+      value: formatPrice(stats?.totalRevenue || 0),
       icon: DollarSign,
       color: "text-green-600",
       bg: "bg-green-50",
@@ -132,6 +135,7 @@ const Dashboard = () => {
             Manage Products
           </Link>
         </Button>
+        <CurrencySelector compact className="ml-2" />
       </div>
 
       {/* Stats Cards */}
@@ -227,7 +231,7 @@ const Dashboard = () => {
                     </TableCell>
                     <TableCell className="text-xs">{order.items.length} items</TableCell>
                     <TableCell className="font-medium text-xs">
-                      ${order.totalAmount.toFixed(2)}
+                      {formatPrice(order.totalAmount)}
                     </TableCell>
                     <TableCell>{getStatusBadge(order.paymentStatus)}</TableCell>
                     <TableCell className="text-[11px] text-muted-foreground">

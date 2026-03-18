@@ -30,6 +30,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import { useState } from "react";
+import CurrencySelector from "./CurrencySelector";
 
 const Navbar = () => {
   const { user, isAuthenticated, isAdmin, logout } = useAuth();
@@ -125,7 +126,8 @@ const Navbar = () => {
         </form>
 
         {/* Right Section — Account & Cart */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
+          <CurrencySelector compact />
           {isAuthenticated ? (
             <>
               <DropdownMenu>
@@ -231,6 +233,14 @@ const Navbar = () => {
                   {cat}
                 </Link>
               ))}
+
+              <div className="border-t border-gray-100 my-4" />
+
+              {/* Mobile Currency Selector */}
+              <div className="px-1 mb-2">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Currency</p>
+                <CurrencySelector compact />
+              </div>
 
               <div className="border-t border-gray-100 my-4" />
 
